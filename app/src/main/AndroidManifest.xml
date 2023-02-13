@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme"
         tools:targetApi="m">
         <activity android:name=".MainActivity"
-            android:theme="@style/FullScreen">
+            android:theme="@style/FullScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
