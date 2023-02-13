@@ -16,6 +16,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final ViewPager2 videosViewPager = findViewById(R.id.viewPagerVideos);
+        videosViewPager.setOffscreenPageLimit(1);
+
+        VideosAdapter adapter = new VideosAdapter();
+        adapter.setVideoItems(getVideoItems());
+
+        videosViewPager.setAdapter(adapter);
+    }
+
+    private List<VideoItem> getVideoItems() {
         List<VideoItem> videoItems = new ArrayList<>();
 
         VideoItem item = new VideoItem();
@@ -36,6 +45,6 @@ public class MainActivity extends AppCompatActivity {
         item3.videoDesc = "Tears of Steel was realized with crowd-funding by users of the open source 3D creation tool Blender.";
         videoItems.add(item3);
 
-        videosViewPager.setAdapter(new VideosAdapter(videoItems));
+        return videoItems;
     }
 }

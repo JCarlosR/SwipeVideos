@@ -16,14 +16,15 @@ import java.util.List;
 public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewHolder>{
     private List<VideoItem> mVideoItems;
 
-    public VideosAdapter(List<VideoItem> videoItems) {
-        mVideoItems = videoItems;
+    public void setVideoItems(List<VideoItem> items) {
+        mVideoItems = items;
     }
 
     @NonNull
     @Override
     public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_videos_container,parent,false));
+        return new VideoViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_videos_container, parent, false));
     }
 
     @Override
@@ -61,9 +62,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideoViewH
                     float videoRatio = mp.getVideoWidth() / (float)mp.getVideoHeight();
                     float screenRatio = mVideoView.getWidth() / (float)mVideoView.getHeight();
                     float scale  = videoRatio / screenRatio;
-                    if (scale >= 1f){
+
+                    if (scale >= 1f) {
                         mVideoView.setScaleX(scale);
-                    }else {
+                    } else {
                         mVideoView.setScaleY(1f / scale);
                     }
                 }
