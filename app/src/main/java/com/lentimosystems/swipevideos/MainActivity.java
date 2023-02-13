@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final ViewPager2 videosViewPager = findViewById(R.id.viewPagerVideos);
-        videosViewPager.setOffscreenPageLimit(1);
+        // videosViewPager.setOffscreenPageLimit(1);
 
         VideosAdapter adapter = new VideosAdapter();
         adapter.setVideoItems(getVideoItems());

@@ -12,6 +12,7 @@ import com.lentimosystems.swipevideos.VideosAdapter.VideoViewHolder
 
 class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
     private var videoItems: List<VideoItem> = listOf()
+
     fun setVideoItems(items: List<VideoItem>) {
         videoItems = items
     }
@@ -27,21 +28,26 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
         holder.setVideoData(videoItems[position])
     }
 
-    override fun getItemCount(): Int {
-        return videoItems.size
-    }
+    override fun getItemCount() = videoItems.size
 
+    /**
+     * As user starts swiping, this gets invoked for the next item.
+     */
     override fun onViewAttachedToWindow(holder: VideoViewHolder) {
         super.onViewAttachedToWindow(holder)
-        Log.d(TAG, "onViewAttachedToWindow: ${holder.txtTitle}")
+        Log.d(TAG, "onViewAttachedToWindow: ${holder.videoItem.videoTitle}")
     }
 
+    /**
+     * This gets invoked only when the user completed the swipe to the next item.
+     */
     override fun onViewDetachedFromWindow(holder: VideoViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        Log.d(TAG, "onViewDetachedFromWindow: ${holder.txtTitle}")
+        Log.d(TAG, "onViewDetachedFromWindow: ${holder.videoItem.videoTitle}")
     }
 
     class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        lateinit var videoItem: VideoItem
         var videoView: VideoView
         var txtTitle: TextView
         var txtDesc: TextView
@@ -55,16 +61,19 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
         }
 
         fun setVideoData(videoItem: VideoItem) {
+            this.videoItem = videoItem
             txtTitle.text = videoItem.videoTitle
             txtDesc.text = videoItem.videoDesc
             videoView.setVideoPath(videoItem.videoURL)
 
             videoView.setOnPreparedListener { mp ->
                 progressBar.visibility = View.GONE
-                mp.start()
+                // mp.start()
+
                 val videoRatio = mp.videoWidth / mp.videoHeight.toFloat()
                 val screenRatio = videoView.width / videoView.height.toFloat()
                 val scale = videoRatio / screenRatio
+
                 if (scale >= 1f) {
                     videoView.scaleX = scale
                 } else {
