@@ -1,5 +1,6 @@
 package com.lentimosystems.swipevideos
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lentimosystems.swipevideos.VideosAdapter.VideoViewHolder
 
 class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
-    private var mVideoItems: List<VideoItem>? = null
-    fun setVideoItems(items: List<VideoItem>?) {
-        mVideoItems = items
+    private var videoItems: List<VideoItem> = listOf()
+    fun setVideoItems(items: List<VideoItem>) {
+        videoItems = items
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
@@ -23,42 +24,57 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        holder.setVideoData(mVideoItems!![position])
+        holder.setVideoData(videoItems[position])
     }
 
     override fun getItemCount(): Int {
-        return mVideoItems!!.size
+        return videoItems.size
+    }
+
+    override fun onViewAttachedToWindow(holder: VideoViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        Log.d(TAG, "onViewAttachedToWindow: ${holder.txtTitle}")
+    }
+
+    override fun onViewDetachedFromWindow(holder: VideoViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        Log.d(TAG, "onViewDetachedFromWindow: ${holder.txtTitle}")
     }
 
     class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var mVideoView: VideoView
+        var videoView: VideoView
         var txtTitle: TextView
         var txtDesc: TextView
-        var mProgressBar: ProgressBar
+        var progressBar: ProgressBar
 
         init {
-            mVideoView = itemView.findViewById(R.id.videoView)
+            videoView = itemView.findViewById(R.id.videoView)
             txtTitle = itemView.findViewById(R.id.txtTitle)
             txtDesc = itemView.findViewById(R.id.txtDesc)
-            mProgressBar = itemView.findViewById(R.id.progressBar)
+            progressBar = itemView.findViewById(R.id.progressBar)
         }
 
         fun setVideoData(videoItem: VideoItem) {
             txtTitle.text = videoItem.videoTitle
             txtDesc.text = videoItem.videoDesc
-            mVideoView.setVideoPath(videoItem.videoURL)
-            mVideoView.setOnPreparedListener { mp ->
-                mProgressBar.visibility = View.GONE
+            videoView.setVideoPath(videoItem.videoURL)
+
+            videoView.setOnPreparedListener { mp ->
+                progressBar.visibility = View.GONE
                 mp.start()
                 val videoRatio = mp.videoWidth / mp.videoHeight.toFloat()
-                val screenRatio = mVideoView.width / mVideoView.height.toFloat()
+                val screenRatio = videoView.width / videoView.height.toFloat()
                 val scale = videoRatio / screenRatio
                 if (scale >= 1f) {
-                    mVideoView.scaleX = scale
+                    videoView.scaleX = scale
                 } else {
-                    mVideoView.scaleY = 1f / scale
+                    videoView.scaleY = 1f / scale
                 }
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "VideosAdapter"
     }
 }
