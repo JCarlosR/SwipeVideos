@@ -1,5 +1,6 @@
 package com.lentimosystems.swipevideos
 
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,9 @@ import com.lentimosystems.swipevideos.VideosAdapter.VideoViewHolder
 class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
     private var videoItems: List<VideoItem> = listOf()
 
+    private var currentItem: VideoViewHolder? = null
+    private var incomingItem: VideoViewHolder? = null
+
     fun setVideoItems(items: List<VideoItem>) {
         videoItems = items
     }
@@ -25,6 +29,7 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
+        Log.d(TAG, "Binding position $position")
         holder.setVideoData(videoItems[position])
     }
 
@@ -35,19 +40,39 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
      */
     override fun onViewAttachedToWindow(holder: VideoViewHolder) {
         super.onViewAttachedToWindow(holder)
+
+        if (currentItem == null) {
+            // Set first video
+            currentItem = holder
+            holder.playWhenReady()
+        } else {
+            // Incoming video
+            incomingItem = holder
+            holder.videoView.pause()
+        }
+
         Log.d(TAG, "onViewAttachedToWindow: ${holder.videoItem.videoTitle}")
     }
 
     /**
-     * This gets invoked only when the user completed the swipe to the next item.
+     * This gets invoked when the user completed the swipe, so previous item is detached.
      */
     override fun onViewDetachedFromWindow(holder: VideoViewHolder) {
         super.onViewDetachedFromWindow(holder)
+
+        currentItem?.videoView?.pause()
+        incomingItem?.videoView?.start()
+
+        currentItem = incomingItem
+
         Log.d(TAG, "onViewDetachedFromWindow: ${holder.videoItem.videoTitle}")
     }
 
     class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         lateinit var videoItem: VideoItem
+
+        private var playWhenReady: Boolean = false
+
         var videoView: VideoView
         var txtTitle: TextView
         var txtDesc: TextView
@@ -60,17 +85,25 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
             progressBar = itemView.findViewById(R.id.progressBar)
         }
 
+        fun playWhenReady() {
+            this.playWhenReady = true
+        }
+
         fun setVideoData(videoItem: VideoItem) {
             this.videoItem = videoItem
+
             txtTitle.text = videoItem.videoTitle
             txtDesc.text = videoItem.videoDesc
             videoView.setVideoPath(videoItem.videoURL)
 
-            videoView.setOnPreparedListener { mp ->
+            videoView.setOnPreparedListener { mediaPlayer ->
                 progressBar.visibility = View.GONE
-                // mp.start()
 
-                val videoRatio = mp.videoWidth / mp.videoHeight.toFloat()
+                if (playWhenReady) {
+                    mediaPlayer.start()
+                }
+
+                val videoRatio = mediaPlayer.videoWidth / mediaPlayer.videoHeight.toFloat()
                 val screenRatio = videoView.width / videoView.height.toFloat()
                 val scale = videoRatio / screenRatio
 
