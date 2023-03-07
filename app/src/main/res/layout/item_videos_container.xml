@@ -5,14 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/black">
 
-    <VideoView
-        android:id="@+id/videoView"
+    <com.google.android.exoplayer2.ui.StyledPlayerView
+        android:id="@+id/playerView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"/>
+        app:use_controller="false"
+        app:resize_mode="fill"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <ProgressBar
         android:id="@+id/progressBar"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,15 +1,19 @@
 package com.lentimosystems.swipevideos
 
-import android.media.MediaPlayer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.VideoView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.lentimosystems.swipevideos.VideosAdapter.VideoViewHolder
+
 
 class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
     private var videoItems: List<VideoItem> = listOf()
@@ -48,7 +52,6 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
         } else {
             // Incoming video
             incomingItem = holder
-            holder.videoView.pause()
         }
 
         Log.d(TAG, "onViewAttachedToWindow: ${holder.videoItem.videoTitle}")
@@ -60,8 +63,8 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
     override fun onViewDetachedFromWindow(holder: VideoViewHolder) {
         super.onViewDetachedFromWindow(holder)
 
-        currentItem?.videoView?.pause()
-        incomingItem?.videoView?.start()
+        currentItem?.pause()
+        incomingItem?.play()
 
         currentItem = incomingItem
 
@@ -71,15 +74,16 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
     class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         lateinit var videoItem: VideoItem
 
-        private var playWhenReady: Boolean = false
+        private var playWhenReady = false
+        private var isSeeking = false
 
-        var videoView: VideoView
+        var playerView: StyledPlayerView
         var txtTitle: TextView
         var txtDesc: TextView
         var progressBar: ProgressBar
 
         init {
-            videoView = itemView.findViewById(R.id.videoView)
+            playerView = itemView.findViewById(R.id.playerView)
             txtTitle = itemView.findViewById(R.id.txtTitle)
             txtDesc = itemView.findViewById(R.id.txtDesc)
             progressBar = itemView.findViewById(R.id.progressBar)
@@ -89,34 +93,68 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
             this.playWhenReady = true
         }
 
+        fun play() {
+            this.playerView.player?.let {
+                // it.seekTo(0) // rewind then play
+                it.play()
+            }
+        }
+
+        fun pause() {
+            this.playerView.player?.pause()
+        }
+
         fun setVideoData(videoItem: VideoItem) {
+            progressBar.isVisible = true
+
             this.videoItem = videoItem
 
             txtTitle.text = videoItem.videoTitle
             txtDesc.text = videoItem.videoDesc
-            videoView.setVideoPath(videoItem.videoURL)
 
-            videoView.setOnPreparedListener { mediaPlayer ->
-                progressBar.visibility = View.GONE
+            val player = SimpleExoPlayer.Builder(itemView.context).build()
+            playerView.player = player
 
-                if (playWhenReady) {
-                    mediaPlayer.start()
+            // Set the media item to be played.
+            val mediaItem: MediaItem = MediaItem.fromUri(videoItem.videoURL)
+            player.setMediaItem(mediaItem)
+            player.prepare()
+
+            player.addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    when (playbackState) {
+                        Player.STATE_IDLE -> {}
+                        Player.STATE_BUFFERING -> {
+                            Log.d(TAG, "STATE_BUFFERING ${videoItem.videoTitle}")
+                        }
+                        Player.STATE_READY -> {
+                            Log.d(TAG, "STATE_READY ${videoItem.videoTitle}, seeking $isSeeking")
+                            progressBar.isVisible = false
+
+                            if (playWhenReady) {
+                                player.play()
+                            } else if (!isSeeking) { // // Prevent infinite loop since seekTo invokes ready state
+                                player.seekTo(INITIAL_FRAME_SEEK_MS)
+                                isSeeking = true
+                            } else {
+                                isSeeking = false
+                            }
+                        }
+                        Player.STATE_ENDED -> {
+                            Log.d(TAG, "STATE_ENDED ${videoItem.videoTitle}")
+                        }
+                    }
                 }
-
-                val videoRatio = mediaPlayer.videoWidth / mediaPlayer.videoHeight.toFloat()
-                val screenRatio = videoView.width / videoView.height.toFloat()
-                val scale = videoRatio / screenRatio
-
-                if (scale >= 1f) {
-                    videoView.scaleX = scale
-                } else {
-                    videoView.scaleY = 1f / scale
-                }
-            }
+            })
         }
     }
 
     companion object {
         private const val TAG = "VideosAdapter"
+
+        /**
+         * High number since the demo videos start with a black screen.
+         */
+        private const val INITIAL_FRAME_SEEK_MS = 500L
     }
 }
