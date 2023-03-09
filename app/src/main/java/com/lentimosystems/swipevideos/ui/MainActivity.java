@@ -1,9 +1,12 @@
-package com.lentimosystems.swipevideos;
+package com.lentimosystems.swipevideos.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+
+import com.lentimosystems.swipevideos.R;
+import com.lentimosystems.swipevideos.model.VideoItem;
 
 import java.util.ArrayList;
 import java.util.List;

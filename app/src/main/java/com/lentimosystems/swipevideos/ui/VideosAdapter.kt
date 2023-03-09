@@ -1,4 +1,4 @@
-package com.lentimosystems.swipevideos
+package com.lentimosystems.swipevideos.ui
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +12,9 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.lentimosystems.swipevideos.VideosAdapter.VideoViewHolder
+import com.lentimosystems.swipevideos.R
+import com.lentimosystems.swipevideos.model.VideoItem
+import com.lentimosystems.swipevideos.ui.VideosAdapter.VideoViewHolder
 
 
 class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
