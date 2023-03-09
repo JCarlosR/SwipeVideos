@@ -12,13 +12,21 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.lentimosystems.swipevideos.PreCacher
 import com.lentimosystems.swipevideos.R
 import com.lentimosystems.swipevideos.model.VideoItem
 import com.lentimosystems.swipevideos.ui.VideosAdapter.VideoViewHolder
 
-
-class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
+/**
+ * Explore Accompanist as a Jetpack Compose alternative for ViewPager2: https://google.github.io/accompanist/pager/
+ */
+class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<VideoViewHolder>() {
     private var videoItems: List<VideoItem> = listOf()
+
+    /**
+     * Position of the item being displayed.
+     */
+    private var currentPosition = 0
 
     private var currentItem: VideoViewHolder? = null
     private var incomingItem: VideoViewHolder? = null
@@ -28,10 +36,10 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
-        return VideoViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_videos_container, parent, false)
-        )
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_videos_container, parent, false)
+
+        return VideoViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
@@ -51,12 +59,28 @@ class VideosAdapter : RecyclerView.Adapter<VideoViewHolder>() {
             // Set first video
             currentItem = holder
             holder.playWhenReady()
+            // Start precaching
+            currentPosition = 0
+            preCacheNextVideo()
         } else {
             // Incoming video
             incomingItem = holder
+            // Precache next of the incoming: only if there is enough bandwidth
+            // Make sure it doesn't overlap the caching process when the swiping finished
         }
 
         Log.d(TAG, "onViewAttachedToWindow: ${holder.videoItem.videoTitle}")
+    }
+
+    private fun preCacheNextVideo() {
+        val nextPosition = currentPosition + 1
+
+        // Reached the end of the playlist
+        if (nextPosition >= videoItems.size) return
+
+        val nextVideoUrl = videoItems[currentPosition + 1].videoURL
+
+        preCacher.precacheVideo(nextVideoUrl)
     }
 
     /**
