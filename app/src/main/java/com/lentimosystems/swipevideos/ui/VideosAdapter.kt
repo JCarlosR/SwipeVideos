@@ -18,7 +18,8 @@ import com.lentimosystems.swipevideos.model.VideoItem
 import com.lentimosystems.swipevideos.ui.VideosAdapter.VideoViewHolder
 
 /**
- * Explore Accompanist as a Jetpack Compose alternative for ViewPager2: https://google.github.io/accompanist/pager/
+ * Accompanist is deprecated, will explore the Pager component: https://developer.android.com/jetpack/compose/layouts/pager
+ * Note: Compose Pager is experiment.
  */
 class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<VideoViewHolder>() {
     private var videoItems: List<VideoItem> = listOf()
@@ -130,26 +131,31 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
             this.playerView.player?.pause()
         }
 
-        fun setVideoData(videoItem: VideoItem) {
-            progressBar.isVisible = true
-
-            this.videoItem = videoItem
-
+        private fun setupTexts() {
             txtTitle.text = videoItem.videoTitle
             txtDesc.text = videoItem.videoDesc
+        }
 
+        private fun setupPlayer() {
             val player = SimpleExoPlayer.Builder(itemView.context).build()
             playerView.player = player
+        }
 
-            // Set the media item to be played.
+        private fun prepareMedia() {
+            Log.d(TAG, "preapreMedia")
+
             val mediaItem: MediaItem = MediaItem.fromUri(videoItem.videoURL)
+            val player = playerView.player ?: return
+
             player.setMediaItem(mediaItem)
             player.prepare()
 
             player.addListener(object : Player.Listener {
                 override fun onPlaybackStateChanged(playbackState: Int) {
                     when (playbackState) {
-                        Player.STATE_IDLE -> {}
+                        Player.STATE_IDLE -> {
+                            Log.d(TAG, "STATE_IDLE ${videoItem.videoTitle}")
+                        }
                         Player.STATE_BUFFERING -> {
                             Log.d(TAG, "STATE_BUFFERING ${videoItem.videoTitle}")
                         }
@@ -172,6 +178,18 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
                     }
                 }
             })
+        }
+
+        fun setVideoData(videoItem: VideoItem) {
+            progressBar.isVisible = true
+
+            this.videoItem = videoItem
+
+            setupTexts()
+
+            setupPlayer()
+
+            prepareMedia()
         }
     }
 
