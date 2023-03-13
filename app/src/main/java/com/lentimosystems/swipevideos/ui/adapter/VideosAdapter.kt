@@ -1,4 +1,4 @@
-package com.lentimosystems.swipevideos.ui
+package com.lentimosystems.swipevideos.ui.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.lentimosystems.swipevideos.PreCacher
 import com.lentimosystems.swipevideos.R
 import com.lentimosystems.swipevideos.model.VideoItem
-import com.lentimosystems.swipevideos.ui.VideosAdapter.VideoViewHolder
+import com.lentimosystems.swipevideos.ui.adapter.VideosAdapter.VideoViewHolder
 
 /**
  * Accompanist is deprecated, will explore the Pager component: https://developer.android.com/jetpack/compose/layouts/pager

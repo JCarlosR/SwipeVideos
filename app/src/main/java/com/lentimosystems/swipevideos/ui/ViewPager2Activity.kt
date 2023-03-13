@@ -6,6 +6,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.lentimosystems.swipevideos.PreCacher
 import com.lentimosystems.swipevideos.R
 import com.lentimosystems.swipevideos.data.VideoItemsList
+import com.lentimosystems.swipevideos.ui.adapter.VideosAdapter
 
 class ViewPager2Activity : AppCompatActivity() {
 
