@@ -8,12 +8,16 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.lentimosystems.swipevideos.ui.compose.VideoPager
 import com.lentimosystems.swipevideos.ui.ui.theme.SwipeVideosTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,27 +34,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun VideoPager() {
-    HorizontalPager(pageCount = 10) { page ->
-        // Our page content
-        Text(
-            text = "Page: $page",
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun VideoPagerPreview() {
-    SwipeVideosTheme {
-        VideoPager()
     }
 }
