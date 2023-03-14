@@ -22,22 +22,10 @@ import com.lentimosystems.swipevideos.model.VideoItem
 import com.lentimosystems.swipevideos.ui.ui.theme.SwipeVideosTheme
 
 @Composable
-fun VideoPlayer(videoItem: VideoItem, playWhenReady: Boolean, modifier: Modifier = Modifier) {
+fun VideoPlayer(videoItem: VideoItem, exoPlayer: SimpleExoPlayer? = null) {
     val context = LocalContext.current
 
-    // create our player
-    val exoPlayer = remember {
-        SimpleExoPlayer.Builder(context).build().apply {
-            this.setMediaItem(
-                MediaItem.fromUri(videoItem.url)
-            )
-            this.playWhenReady = playWhenReady
-            this.prepare()
-            Log.d(TAG, "Preparing ${videoItem.title}")
-        }
-    }
-
-    Box(modifier = modifier) {
+    Box {
         // player view
         DisposableEffect(
             AndroidView(
@@ -59,7 +47,7 @@ fun VideoPlayer(videoItem: VideoItem, playWhenReady: Boolean, modifier: Modifier
             onDispose {
                 Log.d(TAG, "onDispose ${videoItem.title}")
                 // release player when no longer needed
-                exoPlayer.release()
+                exoPlayer?.release()
             }
         }
 
@@ -76,8 +64,7 @@ fun VideoPlayer(videoItem: VideoItem, playWhenReady: Boolean, modifier: Modifier
 fun VideoPlayerPreview() {
     SwipeVideosTheme {
         VideoPlayer(
-            videoItem = VideoItemsList.get()[0],
-            playWhenReady = false
+            videoItem = VideoItemsList.get()[0]
         )
     }
 }
