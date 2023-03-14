@@ -142,7 +142,7 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
         }
 
         private fun prepareMedia() {
-            Log.d(TAG, "preapreMedia")
+            Log.d(TAG, "prepareMedia")
 
             val mediaItem: MediaItem = MediaItem.fromUri(videoItem.url)
             val player = playerView.player ?: return

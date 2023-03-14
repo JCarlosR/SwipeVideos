@@ -20,14 +20,17 @@ fun VideoPager(videos: List<VideoItem>) {
     val pagerState = rememberPagerState()
 
     LaunchedEffect(pagerState) {
-        // Collect from the snapshotFlow and read currentPage
-        snapshotFlow { pagerState.currentPage }.collect { page ->
-            Log.d(TAG, "Page changed to $page")
+        // Collect currentPage or settledPage from the snapshotFlow
+        snapshotFlow { pagerState.settledPage }.collect { page ->
+            Log.d(TAG, "Page settled to $page")
         }
     }
 
-    HorizontalPager(pageCount = 3, state=pagerState) { page ->
-        VideoPlayer(videos[page])
+    HorizontalPager(pageCount = videos.size, state=pagerState) { page ->
+        VideoPlayer(
+            videoItem = videos[page],
+            playWhenReady = page==0
+        )
     }
 }
 
