@@ -1,5 +1,6 @@
 package com.lentimosystems.swipevideos.ui.compose
 
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.foundation.layout.Box
@@ -12,25 +13,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
+import com.lentimosystems.swipevideos.data.VideoItemsList
+import com.lentimosystems.swipevideos.model.VideoItem
 import com.lentimosystems.swipevideos.ui.ui.theme.SwipeVideosTheme
 
 @Composable
-fun VideoPlayer(modifier: Modifier = Modifier) {
+fun VideoPlayer(videoItem: VideoItem, modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
     // create our player
     val exoPlayer = remember {
         SimpleExoPlayer.Builder(context).build().apply {
+            this.setMediaItem(
+                MediaItem.fromUri(videoItem.url)
+            )
             this.prepare()
+            Log.d(TAG, "Preparing ${videoItem.title}")
         }
     }
 
     Box(modifier = modifier) {
         // video title
         Text(
-            text = "Current Title",
+            text = videoItem.title,
             color = Color.White
         )
 
@@ -51,6 +59,7 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
             )
         ) {
             onDispose {
+                Log.d(TAG, "onDispose ${videoItem.title}")
                 // release player when no longer needed
                 exoPlayer.release()
             }
@@ -62,6 +71,8 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
 @Composable
 fun VideoPlayerPreview() {
     SwipeVideosTheme {
-        VideoPlayer()
+        VideoPlayer(
+            VideoItemsList.get()[0]
+        )
     }
 }

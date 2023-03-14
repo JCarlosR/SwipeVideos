@@ -70,7 +70,7 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
             // Make sure it doesn't overlap the caching process when the swiping finished
         }
 
-        Log.d(TAG, "onViewAttachedToWindow: ${holder.videoItem.videoTitle}")
+        Log.d(TAG, "onViewAttachedToWindow: ${holder.videoItem.title}")
     }
 
     private fun preCacheNextVideo() {
@@ -79,7 +79,7 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
         // Reached the end of the playlist
         if (nextPosition >= videoItems.size) return
 
-        val nextVideoUrl = videoItems[currentPosition + 1].videoURL
+        val nextVideoUrl = videoItems[currentPosition + 1].url
 
         preCacher.precacheVideo(nextVideoUrl)
     }
@@ -95,7 +95,7 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
 
         currentItem = incomingItem
 
-        Log.d(TAG, "onViewDetachedFromWindow: ${holder.videoItem.videoTitle}")
+        Log.d(TAG, "onViewDetachedFromWindow: ${holder.videoItem.title}")
     }
 
     class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -132,8 +132,8 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
         }
 
         private fun setupTexts() {
-            txtTitle.text = videoItem.videoTitle
-            txtDesc.text = videoItem.videoDesc
+            txtTitle.text = videoItem.title
+            txtDesc.text = videoItem.description
         }
 
         private fun setupPlayer() {
@@ -144,7 +144,7 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
         private fun prepareMedia() {
             Log.d(TAG, "preapreMedia")
 
-            val mediaItem: MediaItem = MediaItem.fromUri(videoItem.videoURL)
+            val mediaItem: MediaItem = MediaItem.fromUri(videoItem.url)
             val player = playerView.player ?: return
 
             player.setMediaItem(mediaItem)
@@ -154,13 +154,13 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
                 override fun onPlaybackStateChanged(playbackState: Int) {
                     when (playbackState) {
                         Player.STATE_IDLE -> {
-                            Log.d(TAG, "STATE_IDLE ${videoItem.videoTitle}")
+                            Log.d(TAG, "STATE_IDLE ${videoItem.title}")
                         }
                         Player.STATE_BUFFERING -> {
-                            Log.d(TAG, "STATE_BUFFERING ${videoItem.videoTitle}")
+                            Log.d(TAG, "STATE_BUFFERING ${videoItem.title}")
                         }
                         Player.STATE_READY -> {
-                            Log.d(TAG, "STATE_READY ${videoItem.videoTitle}, seeking $isSeeking")
+                            Log.d(TAG, "STATE_READY ${videoItem.title}, seeking $isSeeking")
                             progressBar.isVisible = false
 
                             if (playWhenReady) {
@@ -173,7 +173,7 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
                             }
                         }
                         Player.STATE_ENDED -> {
-                            Log.d(TAG, "STATE_ENDED ${videoItem.videoTitle}")
+                            Log.d(TAG, "STATE_ENDED ${videoItem.title}")
                         }
                     }
                 }

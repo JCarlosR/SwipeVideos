@@ -7,26 +7,26 @@ object VideoItemsList {
         val videoItems: MutableList<VideoItem> = ArrayList()
 
         val item = VideoItem()
-        item.videoURL =
+        item.url =
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-        item.videoTitle = "Big Buck Bunny"
-        item.videoDesc =
+        item.title = "Big Buck Bunny"
+        item.description =
             "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself."
         videoItems.add(item)
 
         val item2 = VideoItem()
-        item2.videoURL =
+        item2.url =
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
-        item2.videoTitle = "We Are Going On Bullrun"
-        item2.videoDesc =
+        item2.title = "We Are Going On Bullrun"
+        item2.description =
             "The Smoking Tire is going on the 2010 Bullrun Live Rally in a 2011 Shelby GT500, and posting a video from the road every single day!"
         videoItems.add(item2)
 
         val item3 = VideoItem()
-        item3.videoURL =
+        item3.url =
             "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
-        item3.videoTitle = "Tears of Steel"
-        item3.videoDesc =
+        item3.title = "Tears of Steel"
+        item3.description =
             "Tears of Steel was realized with crowd-funding by users of the open source 3D creation tool Blender."
         videoItems.add(item3)
 
