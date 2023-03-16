@@ -31,8 +31,8 @@ class MainActivity : ComponentActivity() {
                     VideoPager(
                         videos = uiState.value.videos,
                         settledPage = uiState.value.settledPage,
-                        player = uiState.value.player,
-                        nextPlayer = uiState.value.nextPlayer,
+                        player = uiState.value.player.exoPlayer,
+                        nextPlayer = uiState.value.nextPlayer.exoPlayer,
                         onPageSettled = viewModel::settlePage
                     )
                 }

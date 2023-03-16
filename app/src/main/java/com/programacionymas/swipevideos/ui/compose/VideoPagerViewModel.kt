@@ -16,8 +16,8 @@ data class VideoPagerState(
     var settledPage: Int = 0,
     var videos: List<VideoItem> = VideoItemsList.get(),
 
-    var player: SimpleExoPlayer = MyPlayer.build("MainPlayer"),
-    var nextPlayer: SimpleExoPlayer = MyPlayer.build("NextPlayer")
+    var player: MyPlayer = MyPlayer("MainPlayer"),
+    var nextPlayer: MyPlayer = MyPlayer("NextPlayer")
 )
 
 class VideoPagerViewModel : ViewModel() {
@@ -29,22 +29,45 @@ class VideoPagerViewModel : ViewModel() {
     fun settlePage(page: Int) {
         Log.d(TAG, "Settle page $page")
 
+        val nextPage = page + 1
+
         _uiState.value.apply {
-            this.player.setMediaItem(
-                MediaItem.fromUri(this.videos[page].url)
-            )
-            this.player.playWhenReady = true
-            this.player.prepare()
+            this.settledPage = page
 
-            // Already in last page
-            val nextPage = page + 1
-            if (nextPage >= this.videos.size) return
+            if (this.player.isNewInstance && this.nextPlayer.isNewInstance) {
+                Log.d(TAG, "First page settled")
 
-            this.nextPlayer.setMediaItem(
-                MediaItem.fromUri(this.videos[nextPage].url)
-            )
-            this.nextPlayer.seekTo(INITIAL_FRAME_SEEK_MS)
-            this.nextPlayer.prepare()
+                this.player.prepare(
+                    videoUri = this.videos[page].url,
+                    playWhenReady = true
+                )
+
+                // If it's last page
+                if (nextPage >= this.videos.size) return
+
+                this.nextPlayer.prepare(
+                    videoUri = this.videos[nextPage].url,
+                    seekTo = INITIAL_FRAME_SEEK_MS
+                )
+            } else {
+                this.player.pause()
+                this.nextPlayer.play()
+
+                // Next player becomes now the active player
+                val auxPlayer = this.player
+                this.player = nextPlayer
+
+                // We reuse the other player instance to load next video
+                this.nextPlayer = auxPlayer
+
+                // If it's last page
+                if (nextPage >= this.videos.size) return
+
+                this.nextPlayer.prepare(
+                    videoUri = this.videos[nextPage].url,
+                    seekTo = INITIAL_FRAME_SEEK_MS
+                )
+            }
         }
 
         _uiState.update {
@@ -58,6 +81,6 @@ class VideoPagerViewModel : ViewModel() {
         /**
          * Demo videos start with a black screen so we seek to this for the preview.
          */
-        private const val INITIAL_FRAME_SEEK_MS = 500L
+        private const val INITIAL_FRAME_SEEK_MS = 1_000L
     }
 }
