@@ -58,6 +58,8 @@ class VideoPagerViewModel : ViewModel() {
                 // We reuse the other player instance to load next video
                 this.nextPlayer = auxPlayer
 
+                Log.d(TAG, "Swapped main player with next player")
+
                 // If it's last page
                 if (nextPage >= this.videos.size) return
 

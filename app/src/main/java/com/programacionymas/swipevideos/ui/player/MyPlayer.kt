@@ -31,7 +31,7 @@ class MyPlayer {
     /**
      * For logging purposes.
      */
-    private var videoUri: String = ""
+    var videoUri: String = ""
 
     init {
         addPlaybackStateListener()
@@ -86,16 +86,16 @@ class MyPlayer {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 when (playbackState) {
                     Player.STATE_IDLE -> {
-                        Log.d(TAG, "STATE_IDLE")
+                        Log.d(TAG_STATE, "STATE_IDLE")
                     }
                     Player.STATE_BUFFERING -> {
-                        Log.d(TAG, "STATE_BUFFERING $videoUri")
+                        Log.d(TAG_STATE, "STATE_BUFFERING $videoUri")
                     }
                     Player.STATE_READY -> {
-                        Log.d(TAG, "STATE_READY $videoUri")
+                        Log.d(TAG_STATE, "STATE_READY $videoUri")
                     }
                     Player.STATE_ENDED -> {
-                        Log.d(TAG, "STATE_ENDED")
+                        Log.d(TAG_STATE, "STATE_ENDED")
                     }
                 }
             }
@@ -104,6 +104,7 @@ class MyPlayer {
 
     companion object {
         private const val TAG = "MyPlayer"
+        private const val TAG_STATE = "ExoPlayerState"
         private const val DEBUG = false
     }
 }

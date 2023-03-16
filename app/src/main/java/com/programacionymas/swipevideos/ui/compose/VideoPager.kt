@@ -1,13 +1,14 @@
 package com.programacionymas.swipevideos.ui.compose
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.programacionymas.swipevideos.model.VideoItem
+import com.programacionymas.swipevideos.ui.player.MyPlayer
 
 const val TAG = "VideoPager"
 
@@ -16,8 +17,8 @@ const val TAG = "VideoPager"
 fun VideoPager(
     videos: List<VideoItem>,
     settledPage: Int,
-    player: SimpleExoPlayer,
-    nextPlayer: SimpleExoPlayer,
+    player: MyPlayer,
+    nextPlayer: MyPlayer,
     onPageSettled: (page:Int)->Unit
 ) {
     val pagerState = rememberPagerState()
@@ -30,13 +31,16 @@ fun VideoPager(
     }
 
     HorizontalPager(pageCount = videos.size, state = pagerState) { page ->
+        // Log.d(TAG, "Composing VideoPlayer for page $page (settledPage $settledPage)")
+
         VideoPlayer(
             videoItem = videos[page],
-            exoPlayer = when (page) {
+            myPlayer = when (page) {
                 settledPage -> {
                     player
                 }
                 settledPage + 1 -> {
+                    Log.d(TAG, "Page $page gets video ${nextPlayer.videoUri}")
                     nextPlayer
                 }
                 else -> {

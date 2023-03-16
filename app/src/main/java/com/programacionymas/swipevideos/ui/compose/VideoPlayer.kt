@@ -11,15 +11,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import com.programacionymas.swipevideos.data.VideoItemsList
 import com.programacionymas.swipevideos.model.VideoItem
+import com.programacionymas.swipevideos.ui.player.MyPlayer
 import com.programacionymas.swipevideos.ui.ui.theme.SwipeVideosTheme
 
+/**
+ * AndroidView allows us to hold regular views (not related with Compose),
+ * but we must indicate it how to update its state on tree updates:
+ * https://foso.github.io/Jetpack-Compose-Playground/viewinterop/androidview/
+ */
 @Composable
-fun VideoPlayer(videoItem: VideoItem, exoPlayer: SimpleExoPlayer? = null) {
+fun VideoPlayer(videoItem: VideoItem, myPlayer: MyPlayer? = null) {
     val context = LocalContext.current
 
     Box {
@@ -29,7 +34,7 @@ fun VideoPlayer(videoItem: VideoItem, exoPlayer: SimpleExoPlayer? = null) {
                 factory = {
                     // exo player view for our video player
                     PlayerView(context).apply {
-                        player = exoPlayer
+                        player = myPlayer?.exoPlayer
                         useController = false
                         resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
                         layoutParams =
@@ -38,6 +43,9 @@ fun VideoPlayer(videoItem: VideoItem, exoPlayer: SimpleExoPlayer? = null) {
                                 ViewGroup.LayoutParams.MATCH_PARENT
                             )
                     }
+                },
+                update = {
+                    it.player = myPlayer?.exoPlayer
                 }
             )
         ) {
