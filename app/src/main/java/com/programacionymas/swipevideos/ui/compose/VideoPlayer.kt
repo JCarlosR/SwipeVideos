@@ -42,9 +42,8 @@ fun VideoPlayer(videoItem: VideoItem, exoPlayer: SimpleExoPlayer? = null) {
             )
         ) {
             onDispose {
+                // do not release player because we utilize same 2 instances
                 Log.d(TAG, "onDispose ${videoItem.title}")
-                // release player when no longer needed
-                exoPlayer?.release()
             }
         }
 

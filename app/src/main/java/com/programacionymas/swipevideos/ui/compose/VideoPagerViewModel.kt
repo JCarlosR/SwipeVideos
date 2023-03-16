@@ -16,8 +16,8 @@ data class VideoPagerState(
     var settledPage: Int = 0,
     var videos: List<VideoItem> = VideoItemsList.get(),
 
-    var player: MyPlayer = MyPlayer("MainPlayer"),
-    var nextPlayer: MyPlayer = MyPlayer("NextPlayer")
+    var player: MyPlayer = MyPlayer(),
+    var nextPlayer: MyPlayer = MyPlayer()
 )
 
 class VideoPagerViewModel : ViewModel() {
@@ -32,8 +32,6 @@ class VideoPagerViewModel : ViewModel() {
         val nextPage = page + 1
 
         _uiState.value.apply {
-            this.settledPage = page
-
             if (this.player.isNewInstance && this.nextPlayer.isNewInstance) {
                 Log.d(TAG, "First page settled")
 
