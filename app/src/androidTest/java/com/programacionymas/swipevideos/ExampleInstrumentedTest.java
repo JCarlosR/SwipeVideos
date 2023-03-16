@@ -1,4 +1,4 @@
-package com.lentimosystems.swipevideos;
+package com.programacionymas.swipevideos;
 
 import android.content.Context;
 
@@ -19,8 +19,7 @@ import static org.junit.Assert.*;
 public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() {
-        // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.lentimosystems.swipevideos", appContext.getPackageName());
+        assertEquals("com.programacionymas.swipevideos", appContext.getPackageName());
     }
 }

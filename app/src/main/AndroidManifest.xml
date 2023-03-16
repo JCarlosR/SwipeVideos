@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.lentimosystems.swipevideos" >
+    package="com.programacionymas.swipevideos" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".MyApp"
+        android:name="com.programacionymas.swipevideos.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m" >
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.programacionymas.swipevideos.ui.MainActivity"
             android:exported="true"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme" >
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.ViewPager2Activity"
+            android:name="com.programacionymas.swipevideos.ui.ViewPager2Activity"
             android:exported="true"
             android:theme="@style/FullScreen" >
             <intent-filter>

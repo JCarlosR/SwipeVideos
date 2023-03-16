@@ -1,12 +1,12 @@
-package com.lentimosystems.swipevideos.ui
+package com.programacionymas.swipevideos.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.lentimosystems.swipevideos.PreCacher
-import com.lentimosystems.swipevideos.R
-import com.lentimosystems.swipevideos.data.VideoItemsList
-import com.lentimosystems.swipevideos.ui.adapter.VideosAdapter
+import com.programacionymas.swipevideos.PreCacher
+import com.programacionymas.swipevideos.R
+import com.programacionymas.swipevideos.data.VideoItemsList
+import com.programacionymas.swipevideos.ui.adapter.VideosAdapter
 
 class ViewPager2Activity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.lentimosystems.swipevideos.ui.ui.theme
+package com.programacionymas.swipevideos.ui.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

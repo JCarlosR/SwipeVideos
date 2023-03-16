@@ -1,4 +1,4 @@
-package com.lentimosystems.swipevideos.model
+package com.programacionymas.swipevideos.model
 
 data class VideoItem(
     var url: String,

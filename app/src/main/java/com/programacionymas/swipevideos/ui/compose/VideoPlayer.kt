@@ -1,4 +1,4 @@
-package com.lentimosystems.swipevideos.ui.compose
+package com.programacionymas.swipevideos.ui.compose
 
 import android.util.Log
 import android.view.ViewGroup
@@ -7,19 +7,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
-import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
-import com.lentimosystems.swipevideos.data.VideoItemsList
-import com.lentimosystems.swipevideos.model.VideoItem
-import com.lentimosystems.swipevideos.ui.ui.theme.SwipeVideosTheme
+import com.programacionymas.swipevideos.data.VideoItemsList
+import com.programacionymas.swipevideos.model.VideoItem
+import com.programacionymas.swipevideos.ui.ui.theme.SwipeVideosTheme
 
 @Composable
 fun VideoPlayer(videoItem: VideoItem, exoPlayer: SimpleExoPlayer? = null) {

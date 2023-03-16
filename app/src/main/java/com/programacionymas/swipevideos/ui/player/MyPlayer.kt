@@ -1,9 +1,9 @@
-package com.lentimosystems.swipevideos.ui.player
+package com.programacionymas.swipevideos.ui.player
 
 import android.util.Log
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.lentimosystems.swipevideos.MyApp
+import com.programacionymas.swipevideos.MyApp
 
 /**
  * Wrapper class.

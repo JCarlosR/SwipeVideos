@@ -1,6 +1,6 @@
-package com.lentimosystems.swipevideos.data
+package com.programacionymas.swipevideos.data
 
-import com.lentimosystems.swipevideos.model.VideoItem
+import com.programacionymas.swipevideos.model.VideoItem
 
 object VideoItemsList {
     fun get(): List<VideoItem> {

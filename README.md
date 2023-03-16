@@ -1,9 +1,7 @@
 # Swipe videos
 
-## Screenshots
+Exploring **ViewPager2** and **Compose Pager** as components to allow swiping videos.
 
-<img src="https://github.com/liciolentimo/SwipeVideos/blob/master/app/src/main/res/drawable/screenshot.gif" height="600" width="300" hspace="40">
+As well as the cache mechanism offered by ExoPlayer, in order to immediately play the next video.
 
-## Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/liciolentimo/swipevideos.svg)](https://starchart.cc/liciolentimo/swipevideos)
+The original project was using `VideoView`, but it has been replaced with `ExoPlayer`.

@@ -1,16 +1,12 @@
-package com.lentimosystems.swipevideos.ui.compose
+package com.programacionymas.swipevideos.ui.compose
 
 import android.util.Log
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModel
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.lentimosystems.swipevideos.MyApp
-import com.lentimosystems.swipevideos.data.VideoItemsList
-import com.lentimosystems.swipevideos.model.VideoItem
-import com.lentimosystems.swipevideos.ui.adapter.VideosAdapter
-import com.lentimosystems.swipevideos.ui.player.MyPlayer
+import com.programacionymas.swipevideos.data.VideoItemsList
+import com.programacionymas.swipevideos.model.VideoItem
+import com.programacionymas.swipevideos.ui.player.MyPlayer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

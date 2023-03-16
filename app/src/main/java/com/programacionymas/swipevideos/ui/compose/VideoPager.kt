@@ -1,4 +1,4 @@
-package com.lentimosystems.swipevideos.ui.compose
+package com.programacionymas.swipevideos.ui.compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.HorizontalPager
@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.lentimosystems.swipevideos.model.VideoItem
+import com.programacionymas.swipevideos.model.VideoItem
 
 const val TAG = "VideoPager"
 

@@ -1,4 +1,4 @@
-package com.lentimosystems.swipevideos
+package com.programacionymas.swipevideos
 
 import android.app.Application
 import android.content.Context

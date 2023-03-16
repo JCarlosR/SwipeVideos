@@ -1,8 +1,7 @@
-package com.lentimosystems.swipevideos
+package com.programacionymas.swipevideos
 
 import android.content.Context
 import android.net.Uri
-import android.os.Handler
 import android.util.Log
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.upstream.DataSpec
