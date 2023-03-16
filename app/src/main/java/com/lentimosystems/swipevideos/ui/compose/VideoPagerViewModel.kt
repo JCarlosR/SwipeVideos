@@ -1,12 +1,16 @@
 package com.lentimosystems.swipevideos.ui.compose
 
 import android.util.Log
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModel
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.lentimosystems.swipevideos.MyApp
 import com.lentimosystems.swipevideos.data.VideoItemsList
 import com.lentimosystems.swipevideos.model.VideoItem
+import com.lentimosystems.swipevideos.ui.adapter.VideosAdapter
+import com.lentimosystems.swipevideos.ui.player.MyPlayer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,13 +20,9 @@ data class VideoPagerState(
     var settledPage: Int = 0,
     var videos: List<VideoItem> = VideoItemsList.get(),
 
-    var player: SimpleExoPlayer = buildPlayer(),
-    var nextPlayer: SimpleExoPlayer = buildPlayer()
+    var player: SimpleExoPlayer = MyPlayer.build("MainPlayer"),
+    var nextPlayer: SimpleExoPlayer = MyPlayer.build("NextPlayer")
 )
-
-private fun buildPlayer(): SimpleExoPlayer {
-    return SimpleExoPlayer.Builder(MyApp.getAppContext()).build()
-}
 
 class VideoPagerViewModel : ViewModel() {
     // UI state
