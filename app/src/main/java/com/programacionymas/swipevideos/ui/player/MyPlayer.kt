@@ -26,7 +26,6 @@ class MyPlayer {
 
     /**
      * Considered new instance until preparing media.
-     * TODO: Check if equivalent to IDLE state. Might be that fails to load and end up IDLE.
      */
     var isNewInstance = true
 
@@ -54,9 +53,6 @@ class MyPlayer {
      */
     fun prepare(videoUri: String, seekTo: Long = 0, playWhenReady: Boolean = false) {
         this.isNewInstance = false
-        this.videoUri = videoUri
-
-        Log.d(TAG, "prepare($videoUri)")
 
         this.exoPlayer.setMediaItem(
             MediaItem.fromUri(videoUri)
@@ -70,7 +66,14 @@ class MyPlayer {
             this.exoPlayer.seekTo(seekTo)
         }
 
-        this.exoPlayer.prepare()
+        if (this.videoUri == videoUri) {
+            Log.d(TAG, "already prepared $videoUri")
+        } else {
+            Log.d(TAG, "prepare($videoUri)")
+            this.exoPlayer.prepare()
+        }
+
+        this.videoUri = videoUri
     }
 
     fun play() {
@@ -87,6 +90,9 @@ class MyPlayer {
         exoPlayer.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 when (playbackState) {
+                    Player.STATE_IDLE -> {
+                        Log.d(TAG_STATE, "STATE_IDLE $videoUri")
+                    }
                     Player.STATE_BUFFERING -> {
                         Log.d(TAG_STATE, "STATE_BUFFERING $videoUri")
                     }
@@ -106,7 +112,7 @@ class MyPlayer {
         Handler(Looper.getMainLooper())
     }
 
-    private var lastBufferPercentage: Int = 0
+    private var lastBufferPercentage: Int = -1
 
     private fun startBufferingUpdates() {
         mainHandler.postDelayed(bufferingRunnable, BUFFERING_UPDATES_INTERVAL)

@@ -17,6 +17,7 @@ const val TAG = "VideoPager"
 fun VideoPager(
     videos: List<VideoItem>,
     settledPage: Int,
+    prevPlayer: MyPlayer,
     player: MyPlayer,
     nextPlayer: MyPlayer,
     onPageSettled: (page:Int)->Unit
@@ -40,8 +41,10 @@ fun VideoPager(
                     player
                 }
                 settledPage + 1 -> {
-                    Log.d(TAG, "Page $page gets video ${nextPlayer.videoUri}")
                     nextPlayer
+                }
+                settledPage - 1 -> {
+                    prevPlayer
                 }
                 else -> {
                     null
