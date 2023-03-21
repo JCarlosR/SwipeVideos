@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.programacionymas.swipevideos.data.VideoItemsList
 import com.programacionymas.swipevideos.model.VideoItem
 import com.programacionymas.swipevideos.player.MyPlayer
+import com.programacionymas.swipevideos.player.cache.PreCacher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +20,7 @@ data class VideoPagerState(
     var nextPlayer: MyPlayer = MyPlayer()
 )
 
-class VideoPagerViewModel : ViewModel() {
+class VideoPagerViewModel(private val preCacher: PreCacher) : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(VideoPagerState())
     val uiState: StateFlow<VideoPagerState>
@@ -116,6 +117,8 @@ class VideoPagerViewModel : ViewModel() {
      */
     private fun prepareNextPlayer(position: Int) {
         if (!isValidPosition(position)) return
+
+        preCacher.precacheVideo(_uiState.value.videos[position].url)
 
         _uiState.value.apply {
             this.nextPlayer.prepare(

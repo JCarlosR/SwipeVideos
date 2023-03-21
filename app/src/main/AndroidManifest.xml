@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m" >
         <activity
-            android:name="com.programacionymas.swipevideos.ui.ComposePagerActivity"
+            android:name="com.programacionymas.swipevideos.ui.compose.ComposePagerActivity"
             android:exported="true"
             android:label="@string/title_activity_compose_pager"
             android:theme="@style/AppTheme" >
@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.programacionymas.swipevideos.ui.ViewPager2Activity"
+            android:name="com.programacionymas.swipevideos.ui.viewpager2.ViewPager2Activity"
             android:exported="true"
             android:label="@string/title_activity_view_pager_2"
             android:theme="@style/FullScreen" />

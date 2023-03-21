@@ -1,4 +1,4 @@
-package com.programacionymas.swipevideos.ui
+package com.programacionymas.swipevideos.ui.compose
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,12 +13,16 @@ import com.programacionymas.swipevideos.data.VideoItemsList
 import com.programacionymas.swipevideos.player.cache.PreCacher
 import com.programacionymas.swipevideos.ui.compose.VideoPager
 import com.programacionymas.swipevideos.ui.compose.VideoPagerViewModel
+import com.programacionymas.swipevideos.ui.compose.viewmodel.VideoPagerViewModelFactory
 import com.programacionymas.swipevideos.ui.ui.theme.SwipeVideosTheme
 
 class ComposePagerActivity : ComponentActivity() {
 
-    private val viewModel: VideoPagerViewModel by viewModels()
+    private val viewModel: VideoPagerViewModel by viewModels {
+        VideoPagerViewModelFactory(preCacher)
+    }
 
+    // TODO: Move to a background worker (?)
     private val preCacher by lazy {
         PreCacher(this)
     }
@@ -28,9 +32,6 @@ class ComposePagerActivity : ComponentActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // TODO: Move to a background worker, and invoke from viewModel
-        preCacher.precacheVideo(VideoItemsList.get()[1].url)
 
         setContent {
             SwipeVideosTheme {

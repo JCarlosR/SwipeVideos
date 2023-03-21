@@ -1,4 +1,4 @@
-package com.programacionymas.swipevideos.ui.adapter
+package com.programacionymas.swipevideos.ui.viewpager2.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.programacionymas.swipevideos.player.cache.PreCacher
 import com.programacionymas.swipevideos.R
 import com.programacionymas.swipevideos.model.VideoItem
-import com.programacionymas.swipevideos.ui.adapter.VideosAdapter.VideoViewHolder
+import com.programacionymas.swipevideos.ui.viewpager2.adapter.VideosAdapter.VideoViewHolder
 
 /**
  * Accompanist is deprecated, will explore the Pager component: https://developer.android.com/jetpack/compose/layouts/pager

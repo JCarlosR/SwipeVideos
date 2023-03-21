@@ -1,4 +1,4 @@
-package com.programacionymas.swipevideos.ui
+package com.programacionymas.swipevideos.ui.viewpager2
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.programacionymas.swipevideos.player.cache.PreCacher
 import com.programacionymas.swipevideos.R
 import com.programacionymas.swipevideos.data.VideoItemsList
-import com.programacionymas.swipevideos.ui.adapter.VideosAdapter
+import com.programacionymas.swipevideos.ui.viewpager2.adapter.VideosAdapter
 
 class ViewPager2Activity : AppCompatActivity() {
 
