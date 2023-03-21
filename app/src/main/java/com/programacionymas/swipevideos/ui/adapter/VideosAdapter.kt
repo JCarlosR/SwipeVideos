@@ -133,7 +133,7 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
 
         private fun setupTexts() {
             txtTitle.text = videoItem.title
-            txtDesc.text = videoItem.description
+            txtDesc.text = videoItem.url
         }
 
         private fun setupPlayer() {

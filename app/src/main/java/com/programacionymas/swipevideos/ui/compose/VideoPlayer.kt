@@ -50,16 +50,13 @@ fun VideoPlayer(videoItem: VideoItem, myPlayer: MyPlayer? = null) {
             )
         ) {
             onDispose {
-                // do not release player because we utilize same 2 instances
+                // do not release player because we reuse same 3 instances
                 Log.d(TAG, "onDispose ${videoItem.title}")
             }
         }
 
         // video title
-        Text(
-            text = videoItem.title,
-            color = Color.White
-        )
+        VideoTitle(title = videoItem.title)
     }
 }
 

@@ -9,28 +9,30 @@ object VideoItemsList {
     private val videoItems: ArrayList<VideoItem> by lazy {
         add(
             url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            title = "Big Buck Bunny",
-            description = "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself."
+            title = "Big Buck Bunny"
         )
 
         add(
-            url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-            title = "Tears of Steel",
-            description = "Tears of Steel was realized with crowd-funding by users of the open source 3D creation tool Blender."
+            url = "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            title = "Elephants Dream"
         )
 
         add(
             url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-            title = "We Are Going On Bullrun",
-            description = "The Smoking Tire is going on the 2010 Bullrun Live Rally in a 2011 Shelby GT500, and posting a video from the road every single day!"
+            title = "We Are Going On Bullrun"
+        )
+
+        add(
+            url = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+            title = "For Bigger Fun"
         )
 
         _items
     }
 
-    private fun add(url: String, title: String, description: String) {
+    private fun add(url: String, title: String) {
         _items.add(
-            VideoItem(url, title, description)
+            VideoItem(url, title)
         )
     }
 
