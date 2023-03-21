@@ -15,7 +15,7 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import com.programacionymas.swipevideos.data.VideoItemsList
 import com.programacionymas.swipevideos.model.VideoItem
-import com.programacionymas.swipevideos.ui.player.MyPlayer
+import com.programacionymas.swipevideos.player.MyPlayer
 import com.programacionymas.swipevideos.ui.ui.theme.SwipeVideosTheme
 
 /**

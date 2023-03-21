@@ -12,7 +12,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.programacionymas.swipevideos.PreCacher
+import com.programacionymas.swipevideos.player.cache.PreCacher
 import com.programacionymas.swipevideos.R
 import com.programacionymas.swipevideos.model.VideoItem
 import com.programacionymas.swipevideos.ui.adapter.VideosAdapter.VideoViewHolder

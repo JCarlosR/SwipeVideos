@@ -1,15 +1,18 @@
-package com.programacionymas.swipevideos.ui.player
+package com.programacionymas.swipevideos.player
 
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.google.android.exoplayer2.DefaultLoadControl
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.EventLogger
 import com.programacionymas.swipevideos.MyApp
+import com.programacionymas.swipevideos.player.cache.MyCacheDataSourceProvider
 
 
 /**
@@ -21,7 +24,12 @@ class MyPlayer {
             return MyApp.getAppContext()
         }
 
+    private val mediaSourceFactory = DefaultMediaSourceFactory(
+        MyCacheDataSourceProvider(appContext).getDataSourceFactory()
+    )
+
     val exoPlayer = SimpleExoPlayer.Builder(appContext)
+        .setMediaSourceFactory(mediaSourceFactory)
         .build()
 
     /**

@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import com.programacionymas.swipevideos.model.VideoItem
-import com.programacionymas.swipevideos.ui.player.MyPlayer
+import com.programacionymas.swipevideos.player.MyPlayer
 
 const val TAG = "VideoPager"
 
