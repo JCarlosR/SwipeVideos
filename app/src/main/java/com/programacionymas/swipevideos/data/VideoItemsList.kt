@@ -2,6 +2,10 @@ package com.programacionymas.swipevideos.data
 
 import com.programacionymas.swipevideos.model.VideoItem
 
+/**
+ * TODO: Make sure it works with HLS.
+ * TODO: Precache completely Ads.
+ */
 object VideoItemsList {
 
     private val _items = ArrayList<VideoItem>()
@@ -10,6 +14,11 @@ object VideoItemsList {
         add(
             url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
             title = "Big Buck Bunny"
+        )
+
+        add(
+            url = "https://d2ufudlfb4rsg4.cloudfront.net/newsnation/mkaNi6xbb/adaptive/mkaNi6xbb_master.m3u8",
+            title = "Experts say Xi's visit is diplomatic cover"
         )
 
         add(

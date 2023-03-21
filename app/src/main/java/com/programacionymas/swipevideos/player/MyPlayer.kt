@@ -9,6 +9,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.EventLogger
 import com.programacionymas.swipevideos.MyApp
@@ -56,15 +57,29 @@ class MyPlayer {
         exoPlayer.addAnalyticsListener(logger)
     }
 
+    private val hlsMediaSource by lazy {
+        HlsMediaSource.Factory(
+            MyCacheDataSourceProvider(appContext).getDataSourceFactory()
+        )
+    }
+
     /**
      * Set media and prepare it.
      */
     fun prepare(videoUri: String, seekTo: Long = 0, playWhenReady: Boolean = false) {
         this.isNewInstance = false
 
-        this.exoPlayer.setMediaItem(
-            MediaItem.fromUri(videoUri)
-        )
+        val mediaItem = MediaItem.fromUri(videoUri)
+
+        if (videoUri.endsWith(".mp4")) {
+            this.exoPlayer.setMediaItem(
+                mediaItem
+            )
+        } else if (videoUri.endsWith(".m3u8")) {
+            this.exoPlayer.setMediaSource(
+                hlsMediaSource.createMediaSource(mediaItem)
+            )
+        }
 
         if (playWhenReady) {
             this.exoPlayer.playWhenReady = true

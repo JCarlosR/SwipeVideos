@@ -24,3 +24,15 @@ when swiping. However, if a user goes 2 videos back (to visit a page already dis
 download the video again from the beginning.
 - Adding a `CacheDataSourceFactory` to the player doesn't magically cache the videos. It will just
 read from cache before downloading from upstream (online).
+
+## How to run
+
+On Android Studio > app > `Edit configurations` you can define the `Launch Options`.
+
+There, select `Launch: Specified Activity` and then choose whether `ComposePagerActivity` or `ViewPager2Activity`.
+
+## TODO: What's next
+
+Still pending to implement / test:
+
+- Going background / minimizing the app: do we want to continue precaching on a background job?
