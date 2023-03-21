@@ -23,6 +23,9 @@ class MainActivity : ComponentActivity() {
         PreCacher(this)
     }
 
+    /**
+     * TODO: Stop precaching as user scrolls to the video, as ExoPlayer will take care of it
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

@@ -134,6 +134,6 @@ class VideoPagerViewModel : ViewModel() {
         /**
          * Demo videos start with a black screen so we seek to this for the preview.
          */
-        private const val INITIAL_FRAME_SEEK_MS = 1_000L
+        private const val INITIAL_FRAME_SEEK_MS = 100L
     }
 }

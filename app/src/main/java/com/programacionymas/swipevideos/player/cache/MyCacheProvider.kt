@@ -37,7 +37,7 @@ object MyCacheProvider {
     }
 
     /**
-     * Max video cache size in bytes.
+     * Max total cache size in bytes.
      */
-    private const val MAX_CACHE_SIZE_BYTES = 200L * 1024 * 1024 // 200MB
+    private const val MAX_CACHE_SIZE_BYTES = 200L * 1024 * 1024 // 200 MB
 }
