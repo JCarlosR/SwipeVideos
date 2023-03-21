@@ -1,4 +1,4 @@
-package com.programacionymas.swipevideos.ui.compose
+package com.programacionymas.swipevideos.ui.compose.composable
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.HorizontalPager

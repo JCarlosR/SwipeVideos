@@ -9,10 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import com.programacionymas.swipevideos.data.VideoItemsList
 import com.programacionymas.swipevideos.player.cache.PreCacher
-import com.programacionymas.swipevideos.ui.compose.VideoPager
-import com.programacionymas.swipevideos.ui.compose.VideoPagerViewModel
+import com.programacionymas.swipevideos.ui.compose.composable.VideoPager
+import com.programacionymas.swipevideos.ui.compose.viewmodel.VideoPagerViewModel
 import com.programacionymas.swipevideos.ui.compose.viewmodel.VideoPagerViewModelFactory
 import com.programacionymas.swipevideos.ui.ui.theme.SwipeVideosTheme
 

@@ -1,4 +1,4 @@
-package com.programacionymas.swipevideos.ui.compose
+package com.programacionymas.swipevideos.ui.compose.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package com.programacionymas.swipevideos.ui.compose
+package com.programacionymas.swipevideos.ui.compose.composable
 
 import android.util.Log
 import android.view.ViewGroup

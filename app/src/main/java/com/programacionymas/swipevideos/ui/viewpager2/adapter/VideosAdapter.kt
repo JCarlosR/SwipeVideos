@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.programacionymas.swipevideos.player.cache.PreCacher
 import com.programacionymas.swipevideos.R
 import com.programacionymas.swipevideos.model.VideoItem
+import com.programacionymas.swipevideos.player.cache.MyCacheDataSourceProvider
 import com.programacionymas.swipevideos.ui.viewpager2.adapter.VideosAdapter.VideoViewHolder
 
 /**
@@ -66,7 +68,8 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
         } else {
             // Incoming video
             incomingItem = holder
-            // Precache next of the incoming: only if there is enough bandwidth
+
+            // Precache next video only if there is enough bandwidth
             // Make sure it doesn't overlap the caching process when the swiping finished
         }
 
@@ -136,8 +139,15 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
             txtDesc.text = videoItem.url
         }
 
+        private val mediaSourceFactory = DefaultMediaSourceFactory(
+            MyCacheDataSourceProvider(itemView.context).getDataSourceFactory()
+        )
+
         private fun setupPlayer() {
-            val player = SimpleExoPlayer.Builder(itemView.context).build()
+            val player = SimpleExoPlayer.Builder(itemView.context)
+                .setMediaSourceFactory(mediaSourceFactory)
+                .build()
+
             playerView.player = player
         }
 

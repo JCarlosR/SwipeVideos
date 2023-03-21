@@ -3,7 +3,6 @@ package com.programacionymas.swipevideos.ui.compose.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.programacionymas.swipevideos.player.cache.PreCacher
-import com.programacionymas.swipevideos.ui.compose.VideoPagerViewModel
 
 class VideoPagerViewModelFactory(
     private val preCacher: PreCacher
