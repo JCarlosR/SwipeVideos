@@ -15,7 +15,7 @@ import com.programacionymas.swipevideos.ui.compose.VideoPager
 import com.programacionymas.swipevideos.ui.compose.VideoPagerViewModel
 import com.programacionymas.swipevideos.ui.ui.theme.SwipeVideosTheme
 
-class MainActivity : ComponentActivity() {
+class ComposePagerActivity : ComponentActivity() {
 
     private val viewModel: VideoPagerViewModel by viewModels()
 

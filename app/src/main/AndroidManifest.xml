@@ -16,26 +16,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m" >
         <activity
-            android:name="com.programacionymas.swipevideos.ui.MainActivity"
+            android:name="com.programacionymas.swipevideos.ui.ComposePagerActivity"
             android:exported="true"
-            android:label="@string/title_activity_main"
+            android:label="@string/title_activity_compose_pager"
             android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.programacionymas.swipevideos.ui.ViewPager2Activity"
             android:exported="true"
-            android:theme="@style/FullScreen" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:label="@string/title_activity_view_pager_2"
+            android:theme="@style/FullScreen" />
     </application>
 
 </manifest>
