@@ -1,6 +1,7 @@
 package com.programacionymas.swipevideos.ui.compose.composable
 
 import android.util.Log
+import android.view.SurfaceView
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
@@ -32,11 +34,8 @@ fun VideoPlayer(videoItem: VideoItem, myPlayer: MyPlayer? = null) {
         DisposableEffect(
             AndroidView(
                 factory = {
-                    // exo player view for our video player
-                    PlayerView(context).apply {
-                        player = myPlayer?.exoPlayer
-                        useController = false
-                        resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+                    // exo player renders to this surface view
+                    SurfaceView(context).apply {
                         layoutParams =
                             FrameLayout.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -45,7 +44,7 @@ fun VideoPlayer(videoItem: VideoItem, myPlayer: MyPlayer? = null) {
                     }
                 },
                 update = {
-                    it.player = myPlayer?.exoPlayer
+                    myPlayer?.exoPlayer?.setVideoSurfaceView(it)
                 }
             )
         ) {
