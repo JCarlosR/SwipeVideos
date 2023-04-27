@@ -1,6 +1,8 @@
 package com.programacionymas.swipevideos.ui.compose.viewmodel
 
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.PagerState
 import androidx.lifecycle.ViewModel
 import com.programacionymas.swipevideos.data.VideoItemsList
 import com.programacionymas.swipevideos.model.VideoItem
@@ -12,7 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class VideoPagerState(
-    var settledPage: Int = 0,
     var videos: List<VideoItem> = VideoItemsList.get(),
 
     var prevPlayer: MyPlayer = MyPlayer(),
@@ -20,17 +21,28 @@ data class VideoPagerState(
     var nextPlayer: MyPlayer = MyPlayer()
 )
 
-class VideoPagerViewModel(private val preCacher: PreCacher) : ViewModel() {
+@OptIn(ExperimentalFoundationApi::class)
+class VideoPagerViewModel(
+    private val preCacher: PreCacher
+) : ViewModel() {
+
     // UI state
     private val _uiState = MutableStateFlow(VideoPagerState())
     val uiState: StateFlow<VideoPagerState>
         get() = _uiState.asStateFlow()
 
+    val pagerState = PagerState()
+
+    /**
+     * So we know the swipe direction.
+     */
+    private var previousPage = -1
+
     fun settlePage(page: Int) {
         Log.d(TAG, "Settle page $page")
 
-        val prevPage = page - 1
-        val nextPage = page + 1
+        val pageBefore = page - 1
+        val pageAfter = page + 1
 
         _uiState.value.apply {
             if (this.player.isNewInstance && this.nextPlayer.isNewInstance) {
@@ -39,10 +51,10 @@ class VideoPagerViewModel(private val preCacher: PreCacher) : ViewModel() {
             } else {
                 this.player.pause()
 
-                if (this.settledPage +1 == page) {
+                if (previousPage == pageBefore) {
                     this.nextPlayer.play()
                     swapNext()
-                } else if (this.settledPage -1 == page) {
+                } else if (previousPage == pageAfter) {
                     this.prevPlayer.play()
                     swapPrev()
                 }
@@ -50,25 +62,33 @@ class VideoPagerViewModel(private val preCacher: PreCacher) : ViewModel() {
         }
 
         // Prepare the other players whenever possible
-        prepareNextPlayer(nextPage)
-        preparePrevPlayer(prevPage)
+        prepareNextPlayer(pageAfter)
+        preparePrevPlayer(pageBefore)
 
-        _uiState.update {
-            it.copy(settledPage = page)
-        }
+        previousPage = page
     }
 
     /**
      * Next player becomes now the active player.
      */
     private fun swapNext() {
-        Log.d(TAG, "swapNext")
+        // Log.d(TAG, "swapNext")
+        printPlayers("Before swapNext")
 
-        _uiState.value.apply {
-            val aux = this.prevPlayer
-            this.prevPlayer = player
-            this.player = nextPlayer
-            this.nextPlayer = aux
+        _uiState.update {
+            it.copy(
+                prevPlayer = it.player,
+                player = it.nextPlayer,
+                nextPlayer = it.prevPlayer
+            )
+        }
+
+        printPlayers("After swapNext")
+    }
+
+    private fun printPlayers(label: String) {
+        uiState.value.apply {
+            Log.d(TAG, "$label: ${this.prevPlayer}, ${this.player}, ${this.nextPlayer}")
         }
     }
 
@@ -118,7 +138,7 @@ class VideoPagerViewModel(private val preCacher: PreCacher) : ViewModel() {
     private fun prepareNextPlayer(position: Int) {
         if (!isValidPosition(position)) return
 
-        preCacher.precacheVideo(_uiState.value.videos[position].url)
+        // preCacher.precacheVideo(_uiState.value.videos[position].url)
 
         _uiState.value.apply {
             this.nextPlayer.prepare(

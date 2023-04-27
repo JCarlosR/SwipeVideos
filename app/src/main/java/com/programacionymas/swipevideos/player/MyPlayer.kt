@@ -89,23 +89,30 @@ class MyPlayer {
         }
 
         if (this.videoUri == videoUri) {
-            Log.d(TAG, "already prepared $videoUri")
+            debugLog("already prepared")
         } else {
-            Log.d(TAG, "prepare($videoUri)")
+            this.videoUri = videoUri
+            debugLog("exoPlayer prepare")
             this.exoPlayer.prepare()
         }
-
-        this.videoUri = videoUri
     }
 
     fun play() {
-        Log.d(TAG, "play() $videoUri")
-        this.exoPlayer.play()
+        debugLog("play()")
+        if (this.exoPlayer.isLoading) {
+            this.exoPlayer.playWhenReady = true
+        } else {
+            this.exoPlayer.play()
+        }
     }
 
     fun pause() {
-        Log.d(TAG, "pause() $videoUri")
+        debugLog("pause()")
         this.exoPlayer.pause()
+    }
+
+    private fun debugLog(message: String) {
+        Log.d(TAG, "[${hashCode()}] [$videoFileName] $message")
     }
 
     private fun addPlaybackStateListener() {
@@ -154,6 +161,10 @@ class MyPlayer {
                 mainHandler.postDelayed(this, BUFFERING_UPDATES_INTERVAL)
             }
         }
+    }
+
+    override fun toString(): String {
+        return "MyPlayer(hashCode=${this.hashCode()})"
     }
 
     private val videoFileName: String

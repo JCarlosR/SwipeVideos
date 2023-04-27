@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -29,6 +30,7 @@ class ComposePagerActivity : ComponentActivity() {
     /**
      * TODO: Stop precaching as user scrolls to the video, as ExoPlayer will take care of it
      */
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,10 +44,12 @@ class ComposePagerActivity : ComponentActivity() {
 
                     VideoPager(
                         videos = uiState.value.videos,
-                        settledPage = uiState.value.settledPage,
+                        pagerState = viewModel.pagerState,
+
                         prevPlayer = uiState.value.prevPlayer,
-                        player = uiState.value.player,
+                        currentPlayer = uiState.value.player,
                         nextPlayer = uiState.value.nextPlayer,
+
                         onPageSettled = viewModel::settlePage
                     )
                 }

@@ -1,8 +1,9 @@
 package com.programacionymas.swipevideos.ui.compose.composable
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
@@ -15,40 +16,48 @@ const val TAG = "VideoPager"
 @Composable
 fun VideoPager(
     videos: List<VideoItem>,
-    settledPage: Int,
+    pagerState: PagerState,
     prevPlayer: MyPlayer,
-    player: MyPlayer,
+    currentPlayer: MyPlayer,
     nextPlayer: MyPlayer,
     onPageSettled: (page:Int)->Unit
 ) {
-    val pagerState = rememberPagerState()
+    Log.d(TAG, "Composing VideoPager ${prevPlayer.hashCode()}, ${currentPlayer.hashCode()}, ${nextPlayer.hashCode()}")
 
     LaunchedEffect(pagerState) {
-        // Collect currentPage or settledPage from the snapshotFlow
+        // Collect from the snapshotFlow
         snapshotFlow { pagerState.settledPage }.collect { page ->
             onPageSettled(page)
         }
     }
 
+    fun getPlayer(page: Int, settledPage: Int): MyPlayer? {
+        return when (page) {
+            settledPage -> {
+                currentPlayer
+            }
+            settledPage + 1 -> {
+                nextPlayer
+            }
+            settledPage - 1 -> {
+                prevPlayer
+            }
+            else -> {
+                null
+            }
+        }
+    }
+
+    Log.d(TAG, "Composing HorizontalPager")
+
     HorizontalPager(pageCount = videos.size, state = pagerState) { page ->
-        // Log.d(TAG, "Composing VideoPlayer for page $page (settledPage $settledPage)")
+        val player = getPlayer(page, pagerState.settledPage)
+
+        Log.d(TAG, "Composing page $page, player ${player.hashCode()}")
 
         VideoPlayer(
             videoItem = videos[page],
-            myPlayer = when (page) {
-                settledPage -> {
-                    player
-                }
-                settledPage + 1 -> {
-                    nextPlayer
-                }
-                settledPage - 1 -> {
-                    prevPlayer
-                }
-                else -> {
-                    null
-                }
-            }
+            myPlayer = player
         )
     }
 }
