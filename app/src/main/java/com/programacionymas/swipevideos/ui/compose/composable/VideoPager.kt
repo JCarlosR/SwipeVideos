@@ -58,20 +58,12 @@ fun VideoPager(
     Log.d(TAG, "Composing HorizontalPager")
 
     HorizontalPager(state = pagerState, beyondBoundsPageCount = 1) { page ->
-        Log.d(TAG, "Composing page $page")
-
         val videoItem = videos[page]
+        val shouldFrameCover = (!videoItem.ready || page != pagerState.settledPage)
+
+        Log.d(TAG, "Composing page $page, shouldFrameCover $shouldFrameCover")
 
         Box {
-            if (!videoItem.ready || page != pagerState.settledPage) {
-                AsyncImage(
-                    model = videoItem.firstFrame,
-                    contentDescription = videoItem.title,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            }
-
             if (page == pagerState.settledPage) {
                 VideoPlayer(
                     videoItem = videoItem,
@@ -79,6 +71,12 @@ fun VideoPager(
                     surfaceView = surfaceView
                 )
             }
+
+            FirstFrameCover(
+                isVisible = shouldFrameCover,
+                firstFrameUrl = videoItem.firstFrame,
+                videoTitle = videoItem.title
+            )
         }
     }
 }

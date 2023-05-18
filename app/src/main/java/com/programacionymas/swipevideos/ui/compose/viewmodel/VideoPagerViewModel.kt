@@ -4,13 +4,17 @@ import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.programacionymas.swipevideos.data.VideoItemsList
 import com.programacionymas.swipevideos.model.VideoItem
 import com.programacionymas.swipevideos.player.MyPlayer
 import com.programacionymas.swipevideos.player.cache.PreCacher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class VideoPagerState(
     var videos: List<VideoItem> = VideoItemsList.get(),
@@ -46,14 +50,12 @@ class VideoPagerViewModel(
         val pageAfter = page + 1
 
         _uiState.value.apply {
-            if (this.player.isNewInstance) {
-                Log.d(TAG, "Is first page settled")
-                preparePlayerAndPlay(page)
-            } else {
+            if (!this.player.isNewInstance) {
                 this.player.pause()
-                preparePlayerAndPlay(page)
             }
         }
+
+        preparePlayerAndPlay(page)
 
         // Prepare the other players whenever possible
         precachePosition(pageAfter)
@@ -72,20 +74,28 @@ class VideoPagerViewModel(
      * Prepare main player and start playing.
      */
     private fun preparePlayerAndPlay(position: Int) {
-        _uiState.value.apply {
-            this.videos[position].ready = false
+        setVideoReady(position, false)
 
-            Log.d(TAG, "Starting to prepare ${this.videos[position].title}")
+        Log.d(TAG, "Starting to prepare ${_uiState.value.videos[position].title}")
 
-            this.player.prepare(
-                videoUri = this.videos[position].url,
-                playWhenReady = true
+        _uiState.value.player.prepare(
+            videoUri = _uiState.value.videos[position].url,
+            playWhenReady = true
+        )
+
+        _uiState.value.player.onReady {
+            setVideoReady(position, true)
+            Log.d(TAG, "Callback after DELAY to set ready=true ${_uiState.value.videos[position].title}")
+        }
+    }
+
+    fun setVideoReady(position: Int, isReady: Boolean) {
+        _uiState.update { oldState ->
+            oldState.copy(
+                videos = oldState.videos.toMutableList().apply {
+                    this[position] = this[position].copy(ready = isReady)
+                }
             )
-
-            this.player.onReady {
-                this.videos[position].ready = true
-                Log.d(TAG, "Video callback for playing ${this.videos[position].title}")
-            }
         }
     }
 

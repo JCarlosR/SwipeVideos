@@ -6,6 +6,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -17,6 +18,7 @@ import com.programacionymas.swipevideos.MyApp
 import com.programacionymas.swipevideos.player.cache.MyCacheDataSourceProvider
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
@@ -132,10 +134,7 @@ class MyPlayer {
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 if (isPlaying) {
                     Log.d(TAG, "Is playing!")
-                    runBlocking {
-                        delay(2000L)
-                        callback()
-                    }
+                    callback()
                     this@MyPlayer.exoPlayer.removeListener(this)
                 }
             }
