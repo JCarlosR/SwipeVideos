@@ -1,14 +1,25 @@
 package com.programacionymas.swipevideos.ui.compose.composable
 
 import android.util.Log
+import android.view.SurfaceView
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.AsyncImage
 import com.programacionymas.swipevideos.model.VideoItem
 import com.programacionymas.swipevideos.player.MyPlayer
 
@@ -30,19 +41,44 @@ fun VideoPager(
             onPageSettled(page)
         }
     }
+
+    val context = LocalContext.current
+
+    val surfaceView = remember {
+        SurfaceView(context).apply {
+            layoutParams =
+                FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+        }
+    }
+
     
     Log.d(TAG, "Composing HorizontalPager")
 
-    HorizontalPager(pageCount = videos.size, state = pagerState) { page ->
-        Log.d(TAG, "Composing page $page, player ${player.hashCode()}")
+    HorizontalPager(state = pagerState, beyondBoundsPageCount = 1) { page ->
+        Log.d(TAG, "Composing page $page")
 
-        if (page == pagerState.settledPage) {
-            VideoPlayer(
-                videoItem = videos[page],
-                myPlayer = player
-            )   
-        } else {
-            Text(text = "Page $page")
+        val videoItem = videos[page]
+
+        Box {
+            if (!videoItem.ready || page != pagerState.settledPage) {
+                AsyncImage(
+                    model = videoItem.firstFrame,
+                    contentDescription = videoItem.title,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+
+            if (page == pagerState.settledPage) {
+                VideoPlayer(
+                    videoItem = videoItem,
+                    myPlayer = player,
+                    surfaceView = surfaceView
+                )
+            }
         }
     }
 }

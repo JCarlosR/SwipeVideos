@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.SurfaceHolder
+import android.view.SurfaceView
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -13,6 +15,9 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.EventLogger
 import com.programacionymas.swipevideos.MyApp
 import com.programacionymas.swipevideos.player.cache.MyCacheDataSourceProvider
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 
 /**
@@ -95,6 +100,52 @@ class MyPlayer {
             debugLog("exoPlayer prepare")
             this.exoPlayer.prepare()
         }
+    }
+
+    private val surfaceHolderCallback: SurfaceHolder.Callback = object : SurfaceHolder.Callback {
+        override fun surfaceCreated(holder: SurfaceHolder) {
+            Log.d(TAG, "surfaceCreated")
+        }
+
+        override fun surfaceChanged(holder: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
+
+        }
+
+        override fun surfaceDestroyed(holder: SurfaceHolder) {
+            Log.d(TAG, "surfaceDestroyed")
+        }
+    }
+
+    private var isSurfaceViewSet = false
+
+    fun setSurfaceView(surfaceView: SurfaceView) {
+        if (isSurfaceViewSet) return
+
+        isSurfaceViewSet = true
+
+        this.exoPlayer.setVideoSurfaceView(surfaceView)
+        surfaceView.holder.addCallback(surfaceHolderCallback)
+    }
+
+    fun onReady(callback: ()->Unit) {
+        this.exoPlayer.addListener(object : Player.Listener {
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                if (isPlaying) {
+                    Log.d(TAG, "Is playing!")
+                    runBlocking {
+                        delay(2000L)
+                        callback()
+                    }
+                    this@MyPlayer.exoPlayer.removeListener(this)
+                }
+            }
+            /*override fun onIsLoadingChanged(isLoading: Boolean) {
+                if (isLoading) {
+                    callback()
+                    this@MyPlayer.exoPlayer.removeListener(this)
+                }
+            }*/
+        })
     }
 
     fun play() {

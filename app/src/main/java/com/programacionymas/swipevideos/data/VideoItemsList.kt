@@ -2,46 +2,45 @@ package com.programacionymas.swipevideos.data
 
 import com.programacionymas.swipevideos.model.VideoItem
 
-/**
- * TODO: Make sure it works with HLS.
- * TODO: Precache completely Ads.
- */
 object VideoItemsList {
 
-    private val _items = ArrayList<VideoItem>()
+    private val videoItems = ArrayList<VideoItem>()
 
-    private val videoItems: ArrayList<VideoItem> by lazy {
+    init {
         add(
-            url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            title = "Big Buck Bunny"
+            url = "https://assets.mixkit.co/videos/preview/mixkit-the-spheres-of-a-christmas-tree-2720-large.mp4",
+            title = "Christmas",
+            firstFrame = "https://i.ibb.co/Yy4ynHT/christmas.jpg"
         )
 
         add(
-            url = "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-            title = "Elephants Dream"
+            url = "https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4",
+            title = "Flowers",
+            firstFrame = "https://i.ibb.co/Wz88cgs/flowers.jpg"
         )
 
         add(
-            url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-            title = "We Are Going On Bullrun"
+            url = "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
+            title = "Waves",
+            firstFrame = "https://i.ibb.co/QrhBs1b/waves.jpg"
         )
 
         add(
             url = "https://d2ufudlfb4rsg4.cloudfront.net/newsnation/mkaNi6xbb/adaptive/mkaNi6xbb_master.m3u8",
-            title = "Experts say Xi's visit is diplomatic cover"
+            title = "Experts say Xi's visit is diplomatic cover",
+            firstFrame = "https://i.ibb.co/fkkRx4K/nn-first.jpg"
         )
 
         add(
             url = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-            title = "For Bigger Fun"
+            title = "For Bigger Fun",
+            firstFrame = "https://ibb.co/zHhbnK9][img]https://i.ibb.co/TqBRvzj/lock.jpg"
         )
-
-        _items
     }
 
-    private fun add(url: String, title: String) {
-        _items.add(
-            VideoItem(url, title)
+    private fun add(url: String, title: String, firstFrame: String) {
+        videoItems.add(
+            VideoItem(url, title, firstFrame)
         )
     }
 

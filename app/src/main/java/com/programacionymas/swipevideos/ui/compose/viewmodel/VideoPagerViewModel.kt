@@ -11,7 +11,6 @@ import com.programacionymas.swipevideos.player.cache.PreCacher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 data class VideoPagerState(
     var videos: List<VideoItem> = VideoItemsList.get(),
@@ -21,7 +20,7 @@ data class VideoPagerState(
 
 @OptIn(ExperimentalFoundationApi::class)
 class VideoPagerViewModel(
-    private val preCacher: PreCacher
+    private val cacher: PreCacher
 ) : ViewModel() {
 
     // UI state
@@ -29,7 +28,11 @@ class VideoPagerViewModel(
     val uiState: StateFlow<VideoPagerState>
         get() = _uiState.asStateFlow()
 
-    val pagerState = PagerState()
+    val pagerState = object : PagerState() {
+        override val pageCount: Int
+            get() = uiState.value.videos.size
+
+    }
 
     /**
      * So we know the swipe direction.
@@ -61,7 +64,7 @@ class VideoPagerViewModel(
 
     private fun precachePosition(position: Int) {
         if (!isValidPosition(position)) return
-        preCacher.precacheVideo(uiState.value.videos[position].url)
+        cacher.precacheVideo(uiState.value.videos[position].url)
     }
 
 
@@ -70,10 +73,19 @@ class VideoPagerViewModel(
      */
     private fun preparePlayerAndPlay(position: Int) {
         _uiState.value.apply {
+            this.videos[position].ready = false
+
+            Log.d(TAG, "Starting to prepare ${this.videos[position].title}")
+
             this.player.prepare(
                 videoUri = this.videos[position].url,
                 playWhenReady = true
             )
+
+            this.player.onReady {
+                this.videos[position].ready = true
+                Log.d(TAG, "Video callback for playing ${this.videos[position].title}")
+            }
         }
     }
 
@@ -82,10 +94,5 @@ class VideoPagerViewModel(
 
     companion object {
         private const val TAG = "VideoPagerViewModel"
-
-        /**
-         * Demo videos start with a black screen so we seek to this for the preview.
-         */
-        private const val INITIAL_FRAME_SEEK_MS = 100L
     }
 }

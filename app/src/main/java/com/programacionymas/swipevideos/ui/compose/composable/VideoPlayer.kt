@@ -26,25 +26,24 @@ import com.programacionymas.swipevideos.ui.ui.theme.SwipeVideosTheme
  * https://foso.github.io/Jetpack-Compose-Playground/viewinterop/androidview/
  */
 @Composable
-fun VideoPlayer(videoItem: VideoItem, myPlayer: MyPlayer? = null) {
-    val context = LocalContext.current
-
+fun VideoPlayer(
+    videoItem: VideoItem,
+    myPlayer: MyPlayer? = null,
+    surfaceView: SurfaceView
+) {
     Box {
         // player view
         DisposableEffect(
             AndroidView(
                 factory = {
-                    // exo player renders to this surface view
-                    SurfaceView(context).apply {
-                        layoutParams =
-                            FrameLayout.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT
-                            )
-                    }
+                    // remove from its previous parent to prevent crashes
+                    (surfaceView.parent as? ViewGroup)?.removeView(surfaceView)
+
+                    surfaceView
                 },
                 update = {
-                    myPlayer?.exoPlayer?.setVideoSurfaceView(it)
+                    Log.d(TAG, "Set surfaceView ${it.hashCode()}")
+                    myPlayer?.setSurfaceView(it)
                 }
             )
         ) {
@@ -59,7 +58,7 @@ fun VideoPlayer(videoItem: VideoItem, myPlayer: MyPlayer? = null) {
     }
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun VideoPlayerPreview() {
     SwipeVideosTheme {
@@ -67,4 +66,4 @@ fun VideoPlayerPreview() {
             videoItem = VideoItemsList.get()[0]
         )
     }
-}
+}*/
