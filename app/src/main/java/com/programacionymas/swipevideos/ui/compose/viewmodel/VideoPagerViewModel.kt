@@ -89,7 +89,7 @@ class VideoPagerViewModel(
         }
     }
 
-    fun setVideoReady(position: Int, isReady: Boolean) {
+    private fun setVideoReady(position: Int, isReady: Boolean) {
         _uiState.update { oldState ->
             oldState.copy(
                 videos = oldState.videos.toMutableList().apply {
