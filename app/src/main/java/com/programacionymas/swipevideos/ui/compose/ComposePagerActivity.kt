@@ -46,10 +46,7 @@ class ComposePagerActivity : ComponentActivity() {
                         videos = uiState.value.videos,
                         pagerState = viewModel.pagerState,
 
-                        prevPlayer = uiState.value.prevPlayer,
-                        currentPlayer = uiState.value.player,
-                        nextPlayer = uiState.value.nextPlayer,
-
+                        player = uiState.value.player,
                         onPageSettled = viewModel::settlePage
                     )
                 }

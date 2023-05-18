@@ -2,8 +2,10 @@ package com.programacionymas.swipevideos.ui.compose.composable
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
@@ -17,12 +19,10 @@ const val TAG = "VideoPager"
 fun VideoPager(
     videos: List<VideoItem>,
     pagerState: PagerState,
-    prevPlayer: MyPlayer,
-    currentPlayer: MyPlayer,
-    nextPlayer: MyPlayer,
+    player: MyPlayer,
     onPageSettled: (page:Int)->Unit
 ) {
-    Log.d(TAG, "Composing VideoPager ${prevPlayer.hashCode()}, ${currentPlayer.hashCode()}, ${nextPlayer.hashCode()}")
+    Log.d(TAG, "Composing VideoPager ${player.hashCode()}")
 
     LaunchedEffect(pagerState) {
         // Collect from the snapshotFlow
@@ -30,35 +30,20 @@ fun VideoPager(
             onPageSettled(page)
         }
     }
-
-    fun getPlayer(page: Int, settledPage: Int): MyPlayer? {
-        return when (page) {
-            settledPage -> {
-                currentPlayer
-            }
-            settledPage + 1 -> {
-                nextPlayer
-            }
-            settledPage - 1 -> {
-                prevPlayer
-            }
-            else -> {
-                null
-            }
-        }
-    }
-
+    
     Log.d(TAG, "Composing HorizontalPager")
 
     HorizontalPager(pageCount = videos.size, state = pagerState) { page ->
-        val player = getPlayer(page, pagerState.settledPage)
-
         Log.d(TAG, "Composing page $page, player ${player.hashCode()}")
 
-        VideoPlayer(
-            videoItem = videos[page],
-            myPlayer = player
-        )
+        if (page == pagerState.settledPage) {
+            VideoPlayer(
+                videoItem = videos[page],
+                myPlayer = player
+            )   
+        } else {
+            Text(text = "Page $page")
+        }
     }
 }
 
