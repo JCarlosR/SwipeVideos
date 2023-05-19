@@ -131,19 +131,11 @@ class MyPlayer {
 
     fun onReady(callback: ()->Unit) {
         this.exoPlayer.addListener(object : Player.Listener {
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                if (isPlaying) {
-                    Log.d(TAG, "Is playing!")
-                    callback()
-                    this@MyPlayer.exoPlayer.removeListener(this)
-                }
+            override fun onRenderedFirstFrame() {
+                Log.d(TAG, "Is rendering!")
+                callback()
+                this@MyPlayer.exoPlayer.removeListener(this)
             }
-            /*override fun onIsLoadingChanged(isLoading: Boolean) {
-                if (isLoading) {
-                    callback()
-                    this@MyPlayer.exoPlayer.removeListener(this)
-                }
-            }*/
         })
     }
 
