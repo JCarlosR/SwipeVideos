@@ -57,7 +57,7 @@ fun VideoPager(
     
     Log.d(TAG, "Composing HorizontalPager")
 
-    HorizontalPager(state = pagerState, beyondBoundsPageCount = 1) { page ->
+    HorizontalPager(state = pagerState, beyondBoundsPageCount = 2) { page ->
         val videoItem = videos[page]
         val shouldFrameCover = (!videoItem.ready || page != pagerState.settledPage)
 
@@ -77,6 +77,8 @@ fun VideoPager(
                 firstFrameUrl = videoItem.firstFrame,
                 videoTitle = videoItem.title
             )
+
+            VideoTitle(title = videoItem.title)
         }
     }
 }

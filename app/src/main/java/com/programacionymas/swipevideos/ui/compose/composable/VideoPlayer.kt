@@ -52,9 +52,6 @@ fun VideoPlayer(
                 Log.d(TAG, "onDispose ${videoItem.title}")
             }
         }
-
-        // video title
-        VideoTitle(title = videoItem.title)
     }
 }
 

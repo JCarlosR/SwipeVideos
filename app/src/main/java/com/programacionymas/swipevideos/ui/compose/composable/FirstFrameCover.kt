@@ -18,6 +18,6 @@ fun FirstFrameCover(
         model = firstFrameUrl,
         contentDescription = videoTitle,
         modifier = Modifier.fillMaxSize(),
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.FillBounds
     )
 }

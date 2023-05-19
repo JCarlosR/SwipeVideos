@@ -32,9 +32,9 @@ object VideoItemsList {
         )
 
         add(
-            url = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-            title = "For Bigger Fun",
-            firstFrame = "https://ibb.co/zHhbnK9][img]https://i.ibb.co/TqBRvzj/lock.jpg"
+            url = "https://v.redd.it/8gl6r3cj1n0b1/DASH_720.mp4",
+            title = "TikTok",
+            firstFrame = "https://external-preview.redd.it/OidsuuDcHMOxYQVBM5SkrGWifoO47sg8_ROuPuFK7g8.png?format=pjpg&auto=webp&v=enabled&s=ae75797c535dfe21045d85b71ca41c2b10b7dbfe"
         )
     }
 

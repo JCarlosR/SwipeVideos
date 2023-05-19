@@ -57,7 +57,6 @@ class VideoPagerViewModel(
 
         preparePlayerAndPlay(page)
 
-        // Prepare the other players whenever possible
         precachePosition(pageAfter)
         precachePosition(pageBefore)
 
@@ -85,7 +84,7 @@ class VideoPagerViewModel(
 
         _uiState.value.player.onReady {
             setVideoReady(position, true)
-            Log.d(TAG, "Callback after DELAY to set ready=true ${_uiState.value.videos[position].title}")
+            Log.d(TAG, "Set ready=true to hide first frame cover ${_uiState.value.videos[position].title}")
         }
     }
 
