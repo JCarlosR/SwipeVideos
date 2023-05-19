@@ -50,7 +50,7 @@ fun VideoPager(
 
     Log.d(TAG, "Composing HorizontalPager")
 
-    HorizontalPager(pageCount = videos.size, state = pagerState) { page ->
+    HorizontalPager(state = pagerState) { page ->
         val player = getPlayer(page, pagerState.settledPage)
 
         Log.d(TAG, "Composing page $page, player ${player.hashCode()}")

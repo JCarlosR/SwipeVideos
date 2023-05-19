@@ -31,7 +31,10 @@ class VideoPagerViewModel(
     val uiState: StateFlow<VideoPagerState>
         get() = _uiState.asStateFlow()
 
-    val pagerState = PagerState()
+    val pagerState = object : PagerState() {
+        override val pageCount: Int
+            get() = _uiState.value.videos.size
+    }
 
     /**
      * So we know the swipe direction.

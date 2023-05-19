@@ -8,22 +8,22 @@ import com.programacionymas.swipevideos.model.VideoItem
  */
 object VideoItemsList {
 
-    private val _items = ArrayList<VideoItem>()
+    private val videoItems = ArrayList<VideoItem>()
 
-    private val videoItems: ArrayList<VideoItem> by lazy {
+    init {
         add(
-            url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            title = "Big Buck Bunny"
+            url = "https://assets.mixkit.co/videos/preview/mixkit-the-spheres-of-a-christmas-tree-2720-large.mp4",
+            title = "Christmas"
         )
 
         add(
-            url = "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-            title = "Elephants Dream"
+            url = "https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4",
+            title = "Flowers"
         )
 
         add(
-            url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-            title = "We Are Going On Bullrun"
+            url = "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
+            title = "Waves"
         )
 
         add(
@@ -32,15 +32,13 @@ object VideoItemsList {
         )
 
         add(
-            url = "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-            title = "For Bigger Fun"
+            url = "https://v.redd.it/8gl6r3cj1n0b1/DASH_720.mp4",
+            title = "TikTok"
         )
-
-        _items
     }
 
     private fun add(url: String, title: String) {
-        _items.add(
+        videoItems.add(
             VideoItem(url, title)
         )
     }
