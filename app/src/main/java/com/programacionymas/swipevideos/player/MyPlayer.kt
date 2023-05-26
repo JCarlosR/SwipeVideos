@@ -8,6 +8,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -30,7 +31,7 @@ class MyPlayer {
         CacheDataSourceProvider(appContext).cacheDataSourceFactory
     )
 
-    val exoPlayer = ExoPlayer.Builder(appContext)
+    val exoPlayer = SimpleExoPlayer.Builder(appContext)
         .setMediaSourceFactory(mediaSourceFactory)
         .build()
 
