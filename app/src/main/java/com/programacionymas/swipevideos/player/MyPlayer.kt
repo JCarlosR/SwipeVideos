@@ -6,7 +6,6 @@ import android.os.Looper
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import androidx.lifecycle.LifecycleCoroutineScope
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -15,11 +14,7 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.EventLogger
 import com.programacionymas.swipevideos.MyApp
-import com.programacionymas.swipevideos.player.cache.MyCacheDataSourceProvider
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import com.programacionymas.swipevideos.player.cache.CacheDataSourceProvider
 
 
 /**
@@ -32,7 +27,7 @@ class MyPlayer {
         }
 
     private val mediaSourceFactory = DefaultMediaSourceFactory(
-        MyCacheDataSourceProvider(appContext).getDataSourceFactory()
+        CacheDataSourceProvider(appContext).cacheDataSourceFactory
     )
 
     val exoPlayer = SimpleExoPlayer.Builder(appContext)
@@ -65,7 +60,7 @@ class MyPlayer {
 
     private val hlsMediaSource by lazy {
         HlsMediaSource.Factory(
-            MyCacheDataSourceProvider(appContext).getDataSourceFactory()
+            CacheDataSourceProvider(appContext).cacheDataSourceFactory
         )
     }
 

@@ -7,7 +7,7 @@ import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 
-object MyCacheProvider {
+object CacheProvider {
     /**
      * The CacheEvictor determines when to delete cached files.
      * This one deletes the the least recently used cached file first, when there is no more space.
