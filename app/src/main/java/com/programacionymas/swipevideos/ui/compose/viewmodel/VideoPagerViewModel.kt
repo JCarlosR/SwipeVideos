@@ -76,7 +76,7 @@ class VideoPagerViewModel(
         Log.d(TAG, "Starting to prepare ${_uiState.value.videos[position].title}")
 
         _uiState.value.player.prepare(
-            videoUri = _uiState.value.videos[position].url,
+            videoItem = _uiState.value.videos[position],
             playWhenReady = true
         )
 

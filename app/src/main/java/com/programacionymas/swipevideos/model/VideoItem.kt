@@ -11,6 +11,9 @@ data class VideoItem(
     var firstFrame: String,
     var ready: Boolean = false
 ) {
+    val shortTitle: String
+        get() = title.take(20)
+
     val mediaItem: MediaItem
         get() {
             if (isHls) {

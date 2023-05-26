@@ -24,14 +24,6 @@ class CacheDataSourceProvider(private val context: Context) {
             .setCache(cache)
             .setUpstreamDataSourceFactory(httpDataSourceFactory)
             .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-            .setEventListener(object : CacheDataSource.EventListener {
-                override fun onCachedBytesRead(cacheSizeBytes: Long, cachedBytesRead: Long) {
-                    Log.d(TAG, "onCachedBytesRead. cacheSizeBytes: $cacheSizeBytes, cachedBytesRead: $cachedBytesRead")
-                }
-                override fun onCacheIgnored(reason: Int) {
-                    Log.d(TAG, "onCacheIgnored. reason: $reason")
-                }
-            })
     }
 
     val cacheDataSource by lazy {

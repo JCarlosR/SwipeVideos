@@ -26,7 +26,7 @@ class PreCacher(private val context: Context) {
 
     fun precacheVideo(videoItem: VideoItem) {
         if (videoItem.isHls) {
-            hlsPreCacher.precacheVideo(videoItem.mediaItem)
+            hlsPreCacher.precacheVideo(videoItem)
         } else {
             mp4PreCacher.precacheVideo(videoItem.url)
         }

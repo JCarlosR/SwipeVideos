@@ -6,14 +6,14 @@ import android.os.Looper
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.EventLogger
 import com.programacionymas.swipevideos.MyApp
+import com.programacionymas.swipevideos.model.VideoItem
 import com.programacionymas.swipevideos.player.cache.CacheDataSourceProvider
 
 
@@ -30,7 +30,7 @@ class MyPlayer {
         CacheDataSourceProvider(appContext).cacheDataSourceFactory
     )
 
-    val exoPlayer = SimpleExoPlayer.Builder(appContext)
+    val exoPlayer = ExoPlayer.Builder(appContext)
         .setMediaSourceFactory(mediaSourceFactory)
         .build()
 
@@ -42,7 +42,7 @@ class MyPlayer {
     /**
      * For logging purposes.
      */
-    var videoUri: String = ""
+    var videoItem: VideoItem? = null
 
     init {
         addPlaybackStateListener()
@@ -67,18 +67,18 @@ class MyPlayer {
     /**
      * Set media and prepare it.
      */
-    fun prepare(videoUri: String, seekTo: Long = 0, playWhenReady: Boolean = false) {
+    fun prepare(videoItem: VideoItem, seekTo: Long = 0, playWhenReady: Boolean = false) {
         this.isNewInstance = false
 
-        val mediaItem = MediaItem.fromUri(videoUri)
+        val mediaItem = videoItem.mediaItem
 
-        if (videoUri.endsWith(".mp4")) {
-            this.exoPlayer.setMediaItem(
-                mediaItem
-            )
-        } else if (videoUri.endsWith(".m3u8")) {
+        if (videoItem.isHls) {
             this.exoPlayer.setMediaSource(
                 hlsMediaSource.createMediaSource(mediaItem)
+            )
+        } else {
+            this.exoPlayer.setMediaItem(
+                mediaItem
             )
         }
 
@@ -90,10 +90,10 @@ class MyPlayer {
             this.exoPlayer.seekTo(seekTo)
         }
 
-        if (this.videoUri == videoUri) {
+        if (this.videoItem == videoItem) {
             debugLog("already prepared")
         } else {
-            this.videoUri = videoUri
+            this.videoItem = videoItem
             debugLog("exoPlayer prepare")
             this.exoPlayer.prepare()
         }
@@ -149,7 +149,7 @@ class MyPlayer {
     }
 
     private fun debugLog(message: String) {
-        Log.d(TAG, "[${hashCode()}] [$videoFileName] $message")
+        Log.d(TAG, "[${this.videoItem?.shortTitle}] $message")
     }
 
     private fun addPlaybackStateListener() {
@@ -157,13 +157,13 @@ class MyPlayer {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 when (playbackState) {
                     Player.STATE_IDLE -> {
-                        Log.d(TAG_STATE, "STATE_IDLE $videoUri")
+                        Log.d(TAG_STATE, "STATE_IDLE $videoItem")
                     }
                     Player.STATE_BUFFERING -> {
-                        Log.d(TAG_STATE, "STATE_BUFFERING $videoUri")
+                        Log.d(TAG_STATE, "STATE_BUFFERING $videoItem")
                     }
                     Player.STATE_READY -> {
-                        Log.d(TAG_STATE, "STATE_READY $videoUri | playWhenReady ${exoPlayer.playWhenReady}")
+                        Log.d(TAG_STATE, "STATE_READY $videoItem | playWhenReady ${exoPlayer.playWhenReady}")
                         startBufferingUpdates()
                     }
                     Player.STATE_ENDED -> {
@@ -190,7 +190,7 @@ class MyPlayer {
     private val bufferingRunnable = object : Runnable {
         override fun run() {
             if (exoPlayer.bufferedPercentage != lastBufferPercentage) {
-                Log.d(TAG, "Buffer $videoFileName: position ${exoPlayer.bufferedPosition}, percentage ${exoPlayer.bufferedPercentage}")
+                Log.d(TAG, "Buffer ${videoItem?.shortTitle}: position ${exoPlayer.bufferedPosition}, percentage ${exoPlayer.bufferedPercentage}")
                 lastBufferPercentage = exoPlayer.bufferedPercentage
             }
 
@@ -201,13 +201,9 @@ class MyPlayer {
     }
 
     override fun toString(): String {
-        return "MyPlayer(hashCode=${this.hashCode()})"
+        return "MyPlayer(videoItem=${videoItem?.shortTitle})"
     }
 
-    private val videoFileName: String
-        get() {
-            return this.videoUri.substringAfterLast("/")
-        }
 
     companion object {
         private const val TAG = "MyPlayer"
