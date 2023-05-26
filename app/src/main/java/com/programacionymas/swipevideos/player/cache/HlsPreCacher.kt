@@ -19,7 +19,7 @@ class HlsPreCacher(private val cacheDataSourceFactory: CacheDataSource.Factory) 
                         Log.d(TAG, "Cancel precache for ${videoItem.shortTitle}")
                         downloader.cancel()
                     }
-                    Log.d(TAG, "${videoItem.shortTitle}, bytesDownloaded: $bytesDownloaded, percentDownloaded: $percentDownloaded")
+                    Log.d(TAG, "${videoItem.shortTitle}, kbDownloaded: ${bytesDownloaded/1024}, percentDownloaded: $percentDownloaded")
                 }
             }.onFailure {
                 Log.e(TAG,"Error on ${videoItem.shortTitle}: $it")

@@ -27,11 +27,14 @@ class ComposePagerActivity : ComponentActivity() {
     }
 
     /**
-     * TODO: Stop precaching as user scrolls to the video, as ExoPlayer will take care of it
+     * TODO: Stop precaching a video if player starts playing it
      */
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // For testing purposes, always clear at the beginning
+        preCacher.clearAll()
 
         setContent {
             SwipeVideosTheme {
