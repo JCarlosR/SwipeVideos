@@ -4,17 +4,15 @@ import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.programacionymas.swipevideos.data.VideoItemsList
 import com.programacionymas.swipevideos.model.VideoItem
 import com.programacionymas.swipevideos.player.MyPlayer
+import com.programacionymas.swipevideos.player.cache.Mp4PreCacher
 import com.programacionymas.swipevideos.player.cache.PreCacher
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 data class VideoPagerState(
     var videos: List<VideoItem> = VideoItemsList.get(),
@@ -65,7 +63,7 @@ class VideoPagerViewModel(
 
     private fun precachePosition(position: Int) {
         if (!isValidPosition(position)) return
-        cacher.precacheVideo(uiState.value.videos[position].url)
+        cacher.precacheVideo(uiState.value.videos[position])
     }
 
 

@@ -22,7 +22,6 @@ class ComposePagerActivity : ComponentActivity() {
         VideoPagerViewModelFactory(preCacher)
     }
 
-    // TODO: Move to a background worker (?)
     private val preCacher by lazy {
         PreCacher(this)
     }

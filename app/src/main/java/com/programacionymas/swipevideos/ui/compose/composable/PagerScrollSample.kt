@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScrollToPageSample() {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState { 10 }
     val scrollScope = rememberCoroutineScope()
 
     LaunchedEffect(pagerState) {
@@ -40,8 +40,7 @@ fun ScrollToPageSample() {
     Column {
         HorizontalPager(
             modifier = Modifier.height(400.dp),
-            state = pagerState,
-            pageCount = 10
+            state = pagerState
         ) { page ->
             Box(
                 modifier = Modifier

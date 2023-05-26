@@ -13,10 +13,10 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.programacionymas.swipevideos.player.cache.PreCacher
 import com.programacionymas.swipevideos.R
 import com.programacionymas.swipevideos.model.VideoItem
 import com.programacionymas.swipevideos.player.cache.CacheDataSourceProvider
+import com.programacionymas.swipevideos.player.cache.PreCacher
 import com.programacionymas.swipevideos.ui.viewpager2.adapter.VideosAdapter.VideoViewHolder
 
 /**
@@ -82,7 +82,7 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
         // Reached the end of the playlist
         if (nextPosition >= videoItems.size) return
 
-        val nextVideoUrl = videoItems[currentPosition + 1].url
+        val nextVideoUrl = videoItems[currentPosition + 1]
 
         preCacher.precacheVideo(nextVideoUrl)
     }
