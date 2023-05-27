@@ -53,9 +53,10 @@ class PreCacher(private val context: Context) {
 
     companion object {
         /**
-         * Precache first 30 KB per video.
+         * Precache first 2 MB per video.
+         * Note: average segment size is 750kB ~ 1MB for hd720.
          */
-        const val MAX_BYTES_PER_VIDEO = 30L * 1024
+        const val MAX_BYTES_PER_VIDEO = 2L * 1024 * 1024
 
         private const val TAG = "PreCacher"
     }
