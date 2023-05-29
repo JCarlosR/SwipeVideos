@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.android.exoplayer2.source.hls.offline.HlsDownloader
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.programacionymas.swipevideos.model.VideoItem
+import java.util.concurrent.CancellationException
 import java.util.concurrent.Executors
 
 class HlsPreCacher(private val cacheDataSourceFactory: CacheDataSource.Factory) {
@@ -16,13 +17,18 @@ class HlsPreCacher(private val cacheDataSourceFactory: CacheDataSource.Factory) 
 
                 downloader.download { _, bytesDownloaded, percentDownloaded ->
                     if (bytesDownloaded >= PreCacher.MAX_BYTES_PER_VIDEO) {
-                        Log.d(TAG, "Cancel precache for ${videoItem.shortTitle}")
+                        Log.d(TAG, "Cancel precache for ${videoItem.shortTitle} because already downloaded > 2 MB")
                         downloader.cancel()
+                    } else {
+                        Log.d(TAG, "${videoItem.shortTitle}, kbDownloaded: ${bytesDownloaded/1024}, percentDownloaded: $percentDownloaded")
                     }
-                    Log.d(TAG, "${videoItem.shortTitle}, kbDownloaded: ${bytesDownloaded/1024}, percentDownloaded: $percentDownloaded")
                 }
             }.onFailure {
-                Log.e(TAG,"Error on ${videoItem.shortTitle}: $it")
+                if (it is CancellationException) {
+                    Log.d(TAG,"Stopped ${videoItem.shortTitle}")
+                } else {
+                    Log.e(TAG,"Error on ${videoItem.shortTitle}: $it")
+                }
             }
         }
     }

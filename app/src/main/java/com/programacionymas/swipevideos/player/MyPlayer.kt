@@ -149,7 +149,7 @@ class MyPlayer {
     }
 
     private fun debugLog(message: String) {
-        Log.d(TAG, "[${this.videoItem?.shortTitle}] $message")
+        Log.d(TAG, "${this.videoItem?.shortTitle} $message")
     }
 
     private fun addPlaybackStateListener() {
@@ -190,7 +190,7 @@ class MyPlayer {
     private val bufferingRunnable = object : Runnable {
         override fun run() {
             if (exoPlayer.bufferedPercentage != lastBufferPercentage) {
-                Log.d(TAG, "Buffer ${videoItem?.shortTitle}: position ${exoPlayer.bufferedPosition}, percentage ${exoPlayer.bufferedPercentage}")
+                Log.d(TAG, "Buffering ${videoItem?.shortTitle}: bufferedPosition ${exoPlayer.bufferedPosition}, bufferedPercentage ${exoPlayer.bufferedPercentage}")
                 lastBufferPercentage = exoPlayer.bufferedPercentage
             }
 

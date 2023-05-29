@@ -12,7 +12,7 @@ data class VideoItem(
     var ready: Boolean = false
 ) {
     val shortTitle: String
-        get() = title.take(20)
+        get() = "[${title.take(22)}]"
 
     val mediaItem: MediaItem
         get() {
