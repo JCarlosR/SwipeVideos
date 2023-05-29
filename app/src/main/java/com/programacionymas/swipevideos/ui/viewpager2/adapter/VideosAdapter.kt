@@ -16,7 +16,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.programacionymas.swipevideos.player.cache.PreCacher
 import com.programacionymas.swipevideos.R
 import com.programacionymas.swipevideos.model.VideoItem
-import com.programacionymas.swipevideos.player.cache.MyCacheDataSourceProvider
+import com.programacionymas.swipevideos.player.cache.CacheDataSourceProvider
 import com.programacionymas.swipevideos.ui.viewpager2.adapter.VideosAdapter.VideoViewHolder
 
 /**
@@ -140,7 +140,7 @@ class VideosAdapter(private val preCacher: PreCacher) : RecyclerView.Adapter<Vid
         }
 
         private val mediaSourceFactory = DefaultMediaSourceFactory(
-            MyCacheDataSourceProvider(itemView.context).getDataSourceFactory()
+            CacheDataSourceProvider(itemView.context).cacheDataSourceFactory
         )
 
         private fun setupPlayer() {

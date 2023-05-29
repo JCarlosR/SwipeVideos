@@ -14,8 +14,7 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.EventLogger
 import com.programacionymas.swipevideos.MyApp
-import com.programacionymas.swipevideos.player.cache.MyCacheDataSourceProvider
-
+import com.programacionymas.swipevideos.player.cache.CacheDataSourceProvider
 
 /**
  * Wrapper class.
@@ -27,7 +26,7 @@ class MyPlayer {
         }
 
     private val mediaSourceFactory = DefaultMediaSourceFactory(
-        MyCacheDataSourceProvider(appContext).getDataSourceFactory()
+        CacheDataSourceProvider(appContext).cacheDataSourceFactory
     )
 
     val exoPlayer = SimpleExoPlayer.Builder(appContext)
@@ -60,7 +59,7 @@ class MyPlayer {
 
     private val hlsMediaSourceFactory by lazy {
         HlsMediaSource.Factory(
-            MyCacheDataSourceProvider(appContext).getDataSourceFactory()
+            CacheDataSourceProvider(appContext).cacheDataSourceFactory
         )
     }
 
@@ -132,15 +131,6 @@ class MyPlayer {
                 this@MyPlayer.exoPlayer.removeListener(this)
             }
         })
-    }
-
-    fun play() {
-        debugLog("play()")
-        if (this.exoPlayer.isLoading) {
-            this.exoPlayer.playWhenReady = true
-        } else {
-            this.exoPlayer.play()
-        }
     }
 
     fun pause() {

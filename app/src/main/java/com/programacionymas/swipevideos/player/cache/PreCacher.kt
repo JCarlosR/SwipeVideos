@@ -48,7 +48,7 @@ class PreCacher(private val context: Context) {
         backgroundExecutor.execute {
             runCatching {
                 CacheWriter(
-                    MyCacheDataSourceProvider(context).getDataSource(),
+                    CacheDataSourceProvider(context).cacheDataSource,
                     dataSpec,
                     null,
                     progressListener
