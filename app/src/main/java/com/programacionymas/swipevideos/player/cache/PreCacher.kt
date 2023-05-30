@@ -39,6 +39,14 @@ class PreCacher(private val context: Context) {
     }
 
     /**
+     * Cancel ongoing downloads.
+     */
+    fun cancelAll() {
+        mp4PreCacher.cancelAllDownloads()
+        hlsPreCacher.cancelAllDownloads()
+    }
+
+    /**
      * Remove all cached content.
      */
     fun clearAll() {

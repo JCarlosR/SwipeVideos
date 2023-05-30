@@ -11,50 +11,62 @@ import java.util.concurrent.Executors
  * Relevant questions and answers:
  *
  * - How much should we cache?
- * By percentage doesn't make sense since durations are different. We could calculate the bytes
- * equivalent to the first X seconds, but for now precaching 30 KB per video is enough.
+ * By percentage is not convenient since durations are different. We instead cache a size in bytes,
+ * specifically 2 MB per video which is enough for downloading the first seconds.
  *
  * - How do we prioritize current video loading over precaching?
- * Still need to look about the PriorityTaskManager, and the cancel method, to somehow stop
- * precaching while buffering current video playback.
+ * For this first iteration we are not using any PriorityTaskManager, but we use the cancel method,
+ * to stop caching videos that are not adjacent anymore or buffering as current video playback.
  *
  * - Do we need to manually check if a video is already cached before precaching it?
  * No. The cache method takes care of it.
  */
 class Mp4PreCacher(private val cacheDataSource: CacheDataSource) {
 
+    private val cacheWriters = arrayListOf<CacheWriter>()
+
     fun precacheVideo(videoUrl: String) {
         val videoUri = Uri.parse(videoUrl)
 
+        // What to cache
         val dataSpec = DataSpec(videoUri, 0, PreCacher.MAX_BYTES_PER_VIDEO)
 
+        // Download progress
         val progressListener =
             CacheWriter.ProgressListener { requestLength, bytesCached, newBytesCached ->
                 val downloadPercentage: Double = (bytesCached * 100.0 / requestLength)
-                Log.d(TAG, "download % $downloadPercentage | newBytesCached $newBytesCached | video: $videoUri")
+                Log.d(TAG, "% $downloadPercentage | requestLength $requestLength | newBytesCached $newBytesCached | video: $videoUri")
             }
 
-        preCacheOnAnotherThread(dataSpec, progressListener)
+        val cacheWriter = CacheWriter(
+            cacheDataSource,
+            dataSpec,
+            null,
+            progressListener
+        )
+
+        preCacheOnAnotherThread(cacheWriter)
     }
 
-    /**
-     * @param dataSpec what to cache
-     * @param progressListener listen download progress
-     */
-    private fun preCacheOnAnotherThread(dataSpec: DataSpec, progressListener: CacheWriter.ProgressListener) {
+    private fun preCacheOnAnotherThread(cacheWriter: CacheWriter) {
         val backgroundExecutor = Executors.newSingleThreadScheduledExecutor()
 
         backgroundExecutor.execute {
             runCatching {
-                CacheWriter(
-                    cacheDataSource,
-                    dataSpec,
-                    null,
-                    progressListener
-                ).cache()
+                cacheWriter.cache()
+                cacheWriters.add(cacheWriter)
             }.onFailure {
                 it.printStackTrace()
             }
+        }
+    }
+
+    /**
+     * Cancel all downloads.
+     */
+    fun cancelAllDownloads() {
+        cacheWriters.forEach {
+            it.cancel()
         }
     }
 

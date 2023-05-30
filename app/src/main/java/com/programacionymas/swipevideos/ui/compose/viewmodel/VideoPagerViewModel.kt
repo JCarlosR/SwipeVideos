@@ -53,12 +53,20 @@ class VideoPagerViewModel(
             }
         }
 
+        stopCaching()
         preparePlayerAndPlay(page)
 
         precachePosition(pageAfter)
         precachePosition(pageBefore)
 
         previousPage = page
+    }
+
+    /**
+     * Cancel ongoing downloads, to prioritize adjacent streams.
+     */
+    private fun stopCaching() {
+        cacher.cancelAll()
     }
 
     private fun precachePosition(position: Int) {

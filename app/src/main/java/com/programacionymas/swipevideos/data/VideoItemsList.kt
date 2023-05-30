@@ -49,6 +49,7 @@ object VideoItemsList {
             firstFrame = "https://img.haystack.tv/v1/dev/480x270/haystack-thumbnails/bloomberg/o3IgDEkBc/o3IgDEkBc_720.jpg"
         )
 
+        /*
         add(
             url ="https://d2ufudlfb4rsg4.cloudfront.net/yahoofinance/SJVco2yCc/adaptive/SJVco2yCc_master.m3u8",
             title = "Dish Network stock up on plans to sell wireless on Amazon",
@@ -131,7 +132,7 @@ object VideoItemsList {
             url ="https://d2ufudlfb4rsg4.cloudfront.net/bloomberg/hYde3IBBc/adaptive/hYde3IBBc_master.m3u8",
             title = "JPMorgan Cuts 1,000 First Republic Staffers",
             firstFrame = "https://img.haystack.tv/v1/dev/480x270/haystack-thumbnails/bloomberg/hYde3IBBc/hYde3IBBc_720.jpg"
-        )
+        )*/
 
         add(
             url = "https://assets.mixkit.co/videos/preview/mixkit-the-spheres-of-a-christmas-tree-2720-large.mp4",

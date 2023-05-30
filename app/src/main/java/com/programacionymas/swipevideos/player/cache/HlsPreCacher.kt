@@ -8,6 +8,9 @@ import java.util.concurrent.CancellationException
 import java.util.concurrent.Executors
 
 class HlsPreCacher(private val cacheDataSourceFactory: CacheDataSource.Factory) {
+
+    private val downloaders = arrayListOf<HlsDownloader>()
+
     fun precacheVideo(videoItem: VideoItem) {
         val backgroundExecutor = Executors.newSingleThreadScheduledExecutor()
 
@@ -23,6 +26,8 @@ class HlsPreCacher(private val cacheDataSourceFactory: CacheDataSource.Factory) 
                         Log.d(TAG, "${videoItem.shortTitle}, kbDownloaded: ${bytesDownloaded/1024}, percentDownloaded: $percentDownloaded")
                     }
                 }
+
+                downloaders.add(downloader)
             }.onFailure {
                 if (it is CancellationException) {
                     Log.d(TAG,"Stopped ${videoItem.shortTitle}")
@@ -30,6 +35,12 @@ class HlsPreCacher(private val cacheDataSourceFactory: CacheDataSource.Factory) 
                     Log.e(TAG,"Error on ${videoItem.shortTitle}: $it")
                 }
             }
+        }
+    }
+
+    fun cancelAllDownloads() {
+        downloaders.forEach {
+            it.cancel()
         }
     }
 
