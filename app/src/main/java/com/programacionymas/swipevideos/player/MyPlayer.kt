@@ -134,15 +134,6 @@ class MyPlayer {
         })
     }
 
-    fun play() {
-        debugLog("play()")
-        if (this.exoPlayer.isLoading) {
-            this.exoPlayer.playWhenReady = true
-        } else {
-            this.exoPlayer.play()
-        }
-    }
-
     fun pause() {
         debugLog("pause()")
         this.exoPlayer.pause()

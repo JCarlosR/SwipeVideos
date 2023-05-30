@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.android.exoplayer2.upstream.DataSpec
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.CacheWriter
+import com.programacionymas.swipevideos.model.VideoItem
 import java.util.concurrent.Executors
 
 /**
@@ -21,12 +22,20 @@ import java.util.concurrent.Executors
  * - Do we need to manually check if a video is already cached before precaching it?
  * No. The cache method takes care of it.
  */
-class Mp4PreCacher(private val cacheDataSource: CacheDataSource) {
+class Mp4PreCacher(
+    private val cacheDataSourceProvider: CacheDataSourceProvider
+) : StreamPreCacher(cacheDataSourceProvider) {
 
-    private val cacheWriters = arrayListOf<CacheWriter>()
+    private val cacheWriters by lazy {
+        arrayListOf<CacheWriter>()
+    }
 
-    fun precacheVideo(videoUrl: String) {
-        val videoUri = Uri.parse(videoUrl)
+    private val cacheDataSource by lazy {
+        cacheDataSourceProvider.cacheDataSource
+    }
+
+    override fun precacheVideo(videoItem: VideoItem) {
+        val videoUri = Uri.parse(videoItem.url)
 
         // What to cache
         val dataSpec = DataSpec(videoUri, 0, PreCacher.MAX_BYTES_PER_VIDEO)
@@ -61,10 +70,7 @@ class Mp4PreCacher(private val cacheDataSource: CacheDataSource) {
         }
     }
 
-    /**
-     * Cancel all downloads.
-     */
-    fun cancelAllDownloads() {
+    override fun cancelAllDownloads() {
         cacheWriters.forEach {
             it.cancel()
         }

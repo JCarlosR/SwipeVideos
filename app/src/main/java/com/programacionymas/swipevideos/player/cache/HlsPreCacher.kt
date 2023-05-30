@@ -7,11 +7,19 @@ import com.programacionymas.swipevideos.model.VideoItem
 import java.util.concurrent.CancellationException
 import java.util.concurrent.Executors
 
-class HlsPreCacher(private val cacheDataSourceFactory: CacheDataSource.Factory) {
+class HlsPreCacher(
+    private val cacheDataSourceProvider: CacheDataSourceProvider
+) : StreamPreCacher(cacheDataSourceProvider) {
 
-    private val downloaders = arrayListOf<HlsDownloader>()
+    private val downloaders by lazy {
+        arrayListOf<HlsDownloader>()
+    }
 
-    fun precacheVideo(videoItem: VideoItem) {
+    private val cacheDataSourceFactory by lazy {
+        cacheDataSourceProvider.cacheDataSourceFactory
+    }
+
+    override fun precacheVideo(videoItem: VideoItem) {
         val backgroundExecutor = Executors.newSingleThreadScheduledExecutor()
 
         backgroundExecutor.execute {
@@ -38,7 +46,7 @@ class HlsPreCacher(private val cacheDataSourceFactory: CacheDataSource.Factory) 
         }
     }
 
-    fun cancelAllDownloads() {
+    override fun cancelAllDownloads() {
         downloaders.forEach {
             it.cancel()
         }

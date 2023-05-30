@@ -14,27 +14,19 @@ class PreCacher(private val context: Context) {
         CacheDataSourceProvider(context)
     }
 
-    private val cacheDataSource by lazy {
-        cacheDataSourceProvider.cacheDataSource
+    private val mp4PreCacher: StreamPreCacher by lazy {
+        Mp4PreCacher(cacheDataSourceProvider)
     }
 
-    private val cacheDataSourceFactory by lazy {
-        cacheDataSourceProvider.cacheDataSourceFactory
-    }
-
-    private val mp4PreCacher by lazy {
-        Mp4PreCacher(cacheDataSource)
-    }
-
-    private val hlsPreCacher by lazy {
-        HlsPreCacher(cacheDataSourceFactory)
+    private val hlsPreCacher: StreamPreCacher by lazy {
+        HlsPreCacher(cacheDataSourceProvider)
     }
 
     fun precacheVideo(videoItem: VideoItem) {
         if (videoItem.isHls) {
             hlsPreCacher.precacheVideo(videoItem)
         } else {
-            mp4PreCacher.precacheVideo(videoItem.url)
+            mp4PreCacher.precacheVideo(videoItem)
         }
     }
 
