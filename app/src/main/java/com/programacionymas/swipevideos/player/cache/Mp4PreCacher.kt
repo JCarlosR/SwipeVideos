@@ -3,7 +3,6 @@ package com.programacionymas.swipevideos.player.cache
 import android.net.Uri
 import android.util.Log
 import com.google.android.exoplayer2.upstream.DataSpec
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.CacheWriter
 import com.programacionymas.swipevideos.model.VideoItem
 import java.util.concurrent.Executors

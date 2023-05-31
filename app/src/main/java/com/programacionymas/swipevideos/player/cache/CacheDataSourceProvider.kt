@@ -31,7 +31,7 @@ class CacheDataSourceProvider(private val context: Context) {
     }
 
     companion object {
-        private const val TAG = "CacheDataSourceFactory"
+        private const val TAG = "CacheDataSourceProvider"
     }
 
 }

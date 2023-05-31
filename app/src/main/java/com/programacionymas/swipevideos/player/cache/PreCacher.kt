@@ -2,7 +2,6 @@ package com.programacionymas.swipevideos.player.cache
 
 import android.content.Context
 import android.util.Log
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.programacionymas.swipevideos.model.VideoItem
 
 /**

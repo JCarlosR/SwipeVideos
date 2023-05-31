@@ -2,7 +2,6 @@ package com.programacionymas.swipevideos.player.cache
 
 import android.util.Log
 import com.google.android.exoplayer2.source.hls.offline.HlsDownloader
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.programacionymas.swipevideos.model.VideoItem
 import java.util.concurrent.CancellationException
 import java.util.concurrent.Executors
