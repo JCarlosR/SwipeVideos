@@ -1,5 +1,6 @@
-package com.programacionymas.swipevideos.ui.compose.composable
+package com.programacionymas.swipevideos.sample
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,11 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,18 +23,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
+
+const val TAG = "InfinitePagerSample"
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ScrollToPageSample() {
-    val pagerState = rememberPagerState { 10 }
-    val scrollScope = rememberCoroutineScope()
+fun InfinitePagerSample() {
+    val pageCount = remember { mutableIntStateOf(3) }
+
+    val pagerState = rememberPagerState(pageCount = {
+        return@rememberPagerState pageCount.value
+    })
 
     LaunchedEffect(pagerState) {
         // Collect from the snapshotFlow
         snapshotFlow { pagerState.settledPage }.collect { page ->
-            println("Settled page: $page")
+            Log.d(TAG, "settledPage ${pagerState.settledPage}, pageCount ${pagerState.pageCount}")
+            if (page == pagerState.pageCount - 1) {
+                // adding one more page
+                pageCount.value += 1
+            }
         }
     }
 
@@ -53,21 +62,11 @@ fun ScrollToPageSample() {
                 Text(text = page.toString(), fontSize = 32.sp)
             }
         }
-
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Button(onClick = {
-                scrollScope.launch {
-                    pagerState.scrollToPage(pagerState.currentPage + 1)
-                }
-            }) {
-                Text(text = "Next Page")
-            }
-        }
     }
 }
 
 @Preview
 @Composable
-fun ScrollToPageSamplePreview() {
-    ScrollToPageSample()
+fun InfinitePagerSamplePreview() {
+    InfinitePagerSample()
 }
