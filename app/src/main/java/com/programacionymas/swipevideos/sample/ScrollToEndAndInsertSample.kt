@@ -1,5 +1,6 @@
 package com.programacionymas.swipevideos.sample
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
@@ -26,13 +28,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 
+const val PAGES = 20
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScrollToEndAndInsertSample() {
-    val pagesCount = remember { mutableIntStateOf(20) }
+    val buttonClicked = remember { mutableStateOf(false) }
 
     val pagerState = rememberPagerState {
-        return@rememberPagerState pagesCount.value
+        val computedPageCount = PAGES + if (buttonClicked.value) 1 else 0
+        println("computedPageCount $computedPageCount")
+        return@rememberPagerState computedPageCount
     }
 
     val scrollScope = rememberCoroutineScope()
@@ -48,6 +54,8 @@ fun ScrollToEndAndInsertSample() {
             modifier = Modifier.height(400.dp),
             state = pagerState
         ) { page ->
+            println("Composing page $page")
+
             Box(
                 modifier = Modifier
                     .padding(10.dp)
@@ -60,11 +68,14 @@ fun ScrollToEndAndInsertSample() {
             }
         }
 
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Button(onClick = {
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center,
+        ) {
+            Button(enabled = !buttonClicked.value, onClick = {
                 val lastPage = pagerState.pageCount - 1
 
-                pagesCount.value += 1
+                buttonClicked.value = true
 
                 scrollScope.launch {
                     pagerState.scrollToPage(lastPage)
