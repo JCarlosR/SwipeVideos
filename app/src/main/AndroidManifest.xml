@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.programacionymas.swipevideos" >
+    package="com.programacionymas.swipevideos">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.programacionymas.swipevideos.MyApp"
+        android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,19 +14,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m" >
+        tools:targetApi="m">
         <activity
-            android:name="com.programacionymas.swipevideos.ui.compose.ComposePagerActivity"
+            android:name=".sample.ScrollToEndActivity"
             android:exported="true"
-            android:label="@string/title_activity_compose_pager"
-            android:theme="@style/AppTheme" >
+            android:label="@string/title_activity_scroll_to_end"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.programacionymas.swipevideos.ui.viewpager2.ViewPager2Activity"
+            android:name=".ui.compose.ComposePagerActivity"
+            android:exported="true"
+            android:label="@string/title_activity_compose_pager"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.viewpager2.ViewPager2Activity"
             android:exported="true"
             android:label="@string/title_activity_view_pager_2"
             android:theme="@style/FullScreen" />

@@ -2,4 +2,5 @@
     <string name="app_name">SwipeVideos</string>
     <string name="title_activity_compose_pager">Compose Pager</string>
     <string name="title_activity_view_pager_2">ViewPager2</string>
+    <string name="title_activity_scroll_to_end">ScrollToEndActivity</string>
 </resources>
