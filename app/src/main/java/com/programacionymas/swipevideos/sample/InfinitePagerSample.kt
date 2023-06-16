@@ -1,6 +1,5 @@
 package com.programacionymas.swipevideos.sample
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,8 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-const val TAG = "InfinitePagerSample"
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun InfinitePagerSample() {
@@ -38,7 +35,7 @@ fun InfinitePagerSample() {
     LaunchedEffect(pagerState) {
         // Collect from the snapshotFlow
         snapshotFlow { pagerState.settledPage }.collect { page ->
-            Log.d(TAG, "settledPage ${pagerState.settledPage}, pageCount ${pagerState.pageCount}")
+            println("settledPage ${pagerState.settledPage}, pageCount ${pagerState.pageCount}")
             if (page == pagerState.pageCount - 1) {
                 // adding one more page
                 pageCount.value += 1
@@ -46,21 +43,19 @@ fun InfinitePagerSample() {
         }
     }
 
-    Column {
-        HorizontalPager(
-            modifier = Modifier.height(400.dp),
-            state = pagerState
-        ) { page ->
-            Box(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .background(Color.LightGray)
-                    .fillMaxWidth()
-                    .aspectRatio(1f),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = page.toString(), fontSize = 32.sp)
-            }
+    HorizontalPager(
+        modifier = Modifier.height(400.dp),
+        state = pagerState
+    ) { page ->
+        Box(
+            modifier = Modifier
+                .padding(10.dp)
+                .background(Color.LightGray)
+                .fillMaxWidth()
+                .aspectRatio(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = page.toString(), fontSize = 32.sp)
         }
     }
 }

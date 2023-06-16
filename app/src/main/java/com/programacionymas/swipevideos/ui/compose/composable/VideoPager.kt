@@ -82,15 +82,3 @@ fun VideoPager(
         }
     }
 }
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun VideoPagerPreview() {
-    SwipeVideosTheme {
-        VideoPager(
-            VideoItemsList.get()
-        )
-    }
-}
-*/
