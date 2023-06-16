@@ -20,8 +20,9 @@ data class VideoItem(
                 return MediaItem.Builder()
                     .setUri(url)
                     .setStreamKeys(
-                        Collections.singletonList(
-                            StreamKey(HlsMasterPlaylist.GROUP_INDEX_VARIANT, 0)
+                        listOf(
+                            StreamKey(HlsMasterPlaylist.GROUP_INDEX_VARIANT, 0),
+                            StreamKey(HlsMasterPlaylist.GROUP_INDEX_SUBTITLE, 0)
                         )
                     )
                     .build()
