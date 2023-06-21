@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 data class UiState(
-    var buttonClicked: Boolean = false
+    var buttonClicked: Boolean = false,
+    var pageCount: Int
 )
 
 @ExperimentalFoundationApi
@@ -19,7 +20,7 @@ class ScrollToEndAndInsertViewModel : ViewModel() {
 
     // UI state
     private val _uiState = MutableStateFlow(
-        UiState()
+        UiState(pageCount = INITIAL_PAGES)
     )
 
     val uiState: StateFlow<UiState>
@@ -28,9 +29,7 @@ class ScrollToEndAndInsertViewModel : ViewModel() {
     val pagerState = object : PagerState() {
         override val pageCount: Int
             get() {
-                val computedPageCount = PAGES + if (uiState.value.buttonClicked) 1 else 0
-                println("computedPageCount $computedPageCount")
-                return computedPageCount
+                return uiState.value.pageCount
             }
     }
 
@@ -42,6 +41,7 @@ class ScrollToEndAndInsertViewModel : ViewModel() {
         val lastPage = pagerState.pageCount - 1
 
         _uiState.value.buttonClicked = true
+        _uiState.value.pageCount += 1
 
         viewModelScope.launch {
             pagerState.scrollToPage(lastPage)
@@ -50,6 +50,6 @@ class ScrollToEndAndInsertViewModel : ViewModel() {
 
     companion object {
         private const val TAG = "ScrollToEndAndInsert"
-        private const val PAGES = 20
+        private const val INITIAL_PAGES = 20
     }
 }
