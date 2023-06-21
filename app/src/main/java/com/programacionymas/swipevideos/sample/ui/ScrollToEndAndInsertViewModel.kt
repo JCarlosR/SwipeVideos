@@ -3,6 +3,8 @@ package com.programacionymas.swipevideos.sample.ui
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,8 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 data class UiState(
-    var buttonClicked: Boolean = false,
-    var pageCount: Int
+    var buttonClicked: Boolean = false
 )
 
 @ExperimentalFoundationApi
@@ -20,16 +21,18 @@ class ScrollToEndAndInsertViewModel : ViewModel() {
 
     // UI state
     private val _uiState = MutableStateFlow(
-        UiState(pageCount = INITIAL_PAGES)
+        UiState()
     )
 
     val uiState: StateFlow<UiState>
         get() = _uiState.asStateFlow()
 
+    private val pageCountState = mutableStateOf(INITIAL_PAGES)
+
     val pagerState = object : PagerState() {
         override val pageCount: Int
             get() {
-                return uiState.value.pageCount
+                return pageCountState.value
             }
     }
 
@@ -41,7 +44,7 @@ class ScrollToEndAndInsertViewModel : ViewModel() {
         val lastPage = pagerState.pageCount - 1
 
         _uiState.value.buttonClicked = true
-        _uiState.value.pageCount += 1
+        pageCountState.value += 1
 
         viewModelScope.launch {
             pagerState.scrollToPage(lastPage)
